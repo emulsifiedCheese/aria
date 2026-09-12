@@ -1,6 +1,0 @@
-scenario_id,scenario_type,subject_label,observed_track_ids,notes
-S1,continuous,subject_1,,
-S2,short_occlusion,subject_1,,
-S3,full_exit_reentry,subject_1,,
-S4,multiple_person,subject_1,,
-S4,multiple_person,subject_2,,

@@ -1,1 +1,0 @@
-session_id,incident_id,window_id,incident_type,started_at_sgt,ended_at_sgt,excluded,deletion_required,deletion_completed,recovery_verified,resumed_at_sgt

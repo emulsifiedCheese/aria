@@ -1,6 +1,0 @@
-scenario_id,scenario_type,subject_label,observed_track_ids,notes
-S1,continuous,subject_1,1|6, id jumps - subject 1 isolated
-S2,short_occlusion,subject_1,35|35|35, id consistent
-S3,full_exit_reentry,subject_1,107|121, id changed
-S4,multiple_person,subject_1,22|22|22, id remained stable during crossing
-S4,multiple_person,subject_2,26|26|26, id stable during crossing
