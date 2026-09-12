@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "config_id": "zone-a-phase13-final-acceptance-v2",
+  "status": "parts_complete_overall_partial_accepted_network_limitation",
+  "scope": {
+    "zone": "A",
+    "camera_id": "camera_a",
+    "active_sensor_nodes": ["ESP-A1", "ESP-A2"],
+    "participant_collection_allowed": false,
+    "accepted_input_scopes": ["synthetic", "non_research"]
+  },
+  "acceptance": {
+    "required_scenarios": [
+      "clean_boot_preflight",
+      "integrated_multiple_tracks",
+      "ordinary_activity_predictions",
+      "esp_a1_disconnect_degraded",
+      "esp_a2_disconnect_degraded",
+      "privacy_failure_safe_pause",
+      "privacy_recovery_verified",
+      "firebase_failure_local_continuity",
+      "clean_shutdown",
+      "manifest_counts_and_retention"
+    ],
+    "trace_required_for_every_scenario": true,
+    "privacy_failure_must_block_inference": true
+  },
+  "stability": {
+    "minimum_duration_seconds": 5400,
+    "required_metrics": [
+      "camera_capture_fps",
+      "camera_processing_fps",
+      "esp_a1_packet_delivery_percent",
+      "esp_a2_packet_delivery_percent",
+      "prediction_latency_p95_ms",
+      "storage_growth_bytes"
+    ],
+    "no_sustained_degradation_required": true,
+    "accepted_degradation_limitation": {
+      "allowed": true,
+      "limitation_id": "phase2.4-public-network-delivery",
+      "operator_approval_required": true,
+      "observed_degradation_must_remain_recorded": true,
+      "minimum_duration_and_other_stability_checks_still_required": true,
+      "sole_cause_claim_allowed": false
+    },
+    "no_unexplained_gap_required": true,
+    "no_stale_state_reuse_required": true
+  },
+  "release": {
+    "required_artifacts": [
+      "config/cameras.batamfast.yaml",
+      "config/masks.batamfast.yaml",
+      "config/phase_12_1_inference.json",
+      "config/phase_12_2_dashboard.json",
+      "config/phase_12_3_firebase.json",
+      "models/phase_11_1/camera_only.joblib",
+      "schemas/prediction.schema.json",
+      "schemas/dashboard_state.schema.json",
+      "schemas/firebase_prediction.schema.json"
+    ],
+    "clean_environment_verification_required": true,
+    "secret_scan_required": true,
+    "identity_and_media_scan_required": true,
+    "code_revision_required": true
+  }
+}

@@ -1,0 +1,11 @@
+#aria zone a bytetrack baseline - tune only from controlled masked trials
+tracker_type: bytetrack
+track_high_thresh: 0.25
+track_low_thresh: 0.1
+new_track_thresh: 0.25
+
+#phase 5 processes latest masked frame at 15fps baseline; retain lost track for approx 1 second
+#retune only from s1-s4 evidence
+track_buffer: 15
+match_thresh: 0.8
+fuse_score: true

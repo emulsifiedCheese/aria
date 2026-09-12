@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "config_id": "zone-a-phase11.1-baselines-v1",
+  "split_policy_id": "zone-a-phase10.3-external-test-loso-v1",
+  "random_seed": 3070,
+  "selection_metric": "macro_f1",
+  "class_labels": [
+    "Serving/Processing",
+    "Idle/Waiting",
+    "Reaching/Handling"
+  ],
+  "feature_sets": {
+    "camera_only": [
+      "camera_available",
+      "pose_available",
+      "camera"
+    ],
+    "a1_only": [
+      "a1_available",
+      "esp_a1"
+    ],
+    "a1_a2": [
+      "a1_available",
+      "a2_available",
+      "esp_a1",
+      "esp_a2"
+    ]
+  },
+  "random_forest_candidates": [
+    {
+      "n_estimators": 100,
+      "max_depth": 12,
+      "min_samples_leaf": 1,
+      "class_weight": "balanced_subsample"
+    },
+    {
+      "n_estimators": 100,
+      "max_depth": null,
+      "min_samples_leaf": 2,
+      "class_weight": "balanced_subsample"
+    },
+    {
+      "n_estimators": 200,
+      "max_depth": 18,
+      "min_samples_leaf": 2,
+      "class_weight": "balanced_subsample"
+    }
+  ],
+  "source_hashes": {
+    "participant_features_sha256": "8a2ff699a0a8d30b8d1a44d52ada2d0a9fd77b18429cb35c643c16ac0a5b116f",
+    "split_manifest_sha256": "b624ff13149b907b8a289e8d9923f414cabff335fe55f2a640dfdafa843abc77",
+    "split_audit_sha256": "d4f8bd522681c9b53288ffbd1fa4954a949756994f3966410ba40e5f7be2ad7f"
+  }
+}

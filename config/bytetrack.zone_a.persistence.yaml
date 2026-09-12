@@ -1,0 +1,16 @@
+#aria zone a accepted 5.4 persistence-first byte track profile
+#profile prioritises id continuity
+#accepted live test records occasional cross subject swaps during close overlap in oblique view
+tracker_type: bytetrack
+track_high_thresh: 0.25
+track_low_thresh: 0.1
+new_track_thresh: 0.25
+
+#retain lost identity for up to 90 processed frames so stationary subjects and longer detector gaps can recover existing id
+track_buffer: 90
+
+#permit wider motion/IoU association to favour continuity
+match_thresh: 0.9
+
+#use geometry alone so fluctuating detecter confidence does not redirect stable track to high-confidence neighbouring box
+fuse_score: false

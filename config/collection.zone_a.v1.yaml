@@ -1,0 +1,59 @@
+profile_id: zone-a-collection-v1
+profile_version: 1
+frozen_at_sgt: "2026-08-04T16:00:00+08:00"
+scope: consenting_counter_agents_zone_a
+
+settings:
+  camera_config: config/cameras.batamfast.yaml
+  mask_config: config/masks.batamfast.yaml
+  mediamtx_config: config/mediamtx.local.yaml
+  detector_model: yolov8n.pt
+  tracker_config: config/bytetrack.zone_a.persistence.yaml
+  detector_confidence: 0.10
+  detector_iou: 0.70
+  pose_confidence: 0.15
+  keypoint_confidence: 0.5
+  min_confident_keypoints: 4
+  processing_fps: 15.0
+  inference_size: 768
+  pose_inference_size: 384
+  udp_port: 5005
+  window_seconds: 2.0
+  masked_track_preview: true
+  experimental_track_stitching: false
+
+deployment:
+  camera_id: camera_a
+  capture_mode: 1920x1080@30
+  mask_config_version: batamfast-v2
+  physical_placement_authority: docs/hardware/live_site_setup.md
+  esp_a1: {firmware_version: 1.1.1, sensor_config: A_PIR_US_MIC, local_udp_port: 4210}
+  esp_a2: {firmware_version: 1.1.1, sensor_config: A_PIR_MIC, local_udp_port: 4211}
+  maximum_session_minutes: 90
+  annotator_id: A001
+  activity_labels:
+    - Serving
+    - Typing/Processing
+    - Idle/Waiting
+    - Reaching/Handling
+
+artifacts:
+  config/cameras.batamfast.yaml: 1b057b512b571bb3f65d0c1f470c653a453b9615b70bc154f93b4adebea7d8bf
+  config/masks.batamfast.yaml: afb994e95f892fe0115093fedda7132d1c8261209cfbde072c4b69a205ca39d5
+  config/mediamtx.local.yaml: 7e0f91c37b632bf93548795a2d59aee85ba576f1388ce30550e5a8b5e69e9773
+  config/bytetrack.zone_a.persistence.yaml: 320ee8e20c4ea5d118ba93c8f7911167bb5ab09a5d78b40a6052e1f9a8ab3985
+  yolov8n.pt: f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36
+  firmware/esp_a/ESP_A_v1/ESP_A_v1.ino: 3660730f694073b4842c8c12711167c9431a4f91ec75240706064f6e26a77451
+  firmware/esp_a/ESP_A2_v1/ESP_A2_v1.ino: 4c7d68f3ccff3974d336d7f2feac5acde636a9cc44ba076171111a6bb5ea5abf
+  schemas/annotation.schema.json: 2970a81bbec10a67071dc51192d1a9c5e9886db728cdfebc2e629276c251056e
+  schemas/camera_track.schema.json: 19d1e898dbb55c37969eaa3f629670080cbcb726e2174ba762156cc1982e4327
+  schemas/esp_packet.schema.json: d25711fe9df6285e5cac58454da668e0a0c9e6a6257269329ebae2c57695c23f
+  schemas/feature_vector.schema.json: 410099c211d3fcd6119fb70b65841212345f96da51419c7e0143a963fdfab3d3
+  schemas/incident.schema.json: a370cc4c7adb4786152aa4e98307b7f41495b4389b8408249a232ea2abe37edf
+  schemas/prediction.schema.json: 9db184254e7e1aad8affc52d1bde6d4d196eea574cca0439b6aa2f20a399b688
+  schemas/session_manifest.schema.json: 2a861091ff1f92afb942a6f7095c9d2a6524935c12ef029819eee968738609ca
+  docs/data_collection/session_protocol.md: bde9bb38db835933dad45a4e6e3e857db2014e32d37d2b7870734fecdaf79be5
+  docs/data_collection/annotation_protocol.md: 72494dea4091ef845fecdf24e096ed85db775e483ef61e42315c26dcd052909a
+  docs/data_collection/pre_session_checklist.md: a478a9ee7b1ab4b33be6fe4129ff79287915fa155e4611a0aeb6e2c87f41015e
+  docs/data_collection/post_session_checklist.md: a92f93a2830229e47e5898d72c0228c2597098e0761316acc7a3d81c60f6decd
+  docs/hardware/live_site_setup.md: 09dcac7ca73301fef1324e2943e09e9349f992ac6c4f16cde33c81c8b20bf197

@@ -1,0 +1,14 @@
+#aria zone a experimental oc-sort profile c2 - non-research use only
+#compared with rejected default oc-sort candidate (4/8/2026), this changes only use_byte so 0.10-0.25 confidence detections can recover existing tracks
+#must not be used for pilot or participant collection without s1-s4 proof
+tracker_type: ocsort
+track_high_thresh: 0.25
+track_low_thresh: 0.1
+new_track_thresh: 0.25
+track_buffer: 30
+match_thresh: 0.8
+fuse_score: true
+
+delta_t: 3
+inertia: 0.2
+use_byte: true

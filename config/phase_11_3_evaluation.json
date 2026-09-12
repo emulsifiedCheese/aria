@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "config_id": "zone-a-phase11.3-evaluation-v1",
+  "split_policy_id": "zone-a-phase10.3-external-test-loso-v1",
+  "random_seed": 3070,
+  "class_labels": [
+    "Serving/Processing",
+    "Idle/Waiting",
+    "Reaching/Handling"
+  ],
+  "selected_model": {
+    "name": "camera_only",
+    "source_phase": "11.1",
+    "artifact_path": "models/phase_11_1/camera_only.joblib",
+    "artifact_sha256": "5c42e8c0d9639271f7e38c9108ba0017dd3acb1f38b3f36ef510e33c6e9fa78c",
+    "feature_roots": [
+      "camera_available",
+      "pose_available",
+      "camera"
+    ],
+    "development_macro_f1": 0.4427914495497605
+  },
+  "source_hashes": {
+    "participant_features_sha256": "8a2ff699a0a8d30b8d1a44d52ada2d0a9fd77b18429cb35c643c16ac0a5b116f",
+    "split_manifest_sha256": "b624ff13149b907b8a289e8d9923f414cabff335fe55f2a640dfdafa843abc77",
+    "split_audit_sha256": "d4f8bd522681c9b53288ffbd1fa4954a949756994f3966410ba40e5f7be2ad7f",
+    "phase_11_1_config_sha256": "82fd0b85188f9e230c58ddfc076c64b8d3d41c3342e907a60f306dd537279bd7",
+    "phase_11_1_metrics_sha256": "5fd8654602a607346740bbd4acbbe2707ae8e0337a591406624d9632f26efbe8",
+    "phase_11_2_config_sha256": "6fbfcf1914f746bae72a9e77a671d5619907e952c1f5d1e0d39a2b98ca300896",
+    "phase_11_2_metrics_sha256": "f7acfe0e4fda73391f2a3c6c6a0a43ee80c608fc77560db6e243ebb90dfe3fae"
+  },
+  "external_evaluation": {
+    "expected_row_count": 2068,
+    "allowed_models": [
+      "camera_only"
+    ],
+    "fit_allowed": false,
+    "parameter_changes_allowed": false,
+    "overwrite_allowed": false,
+    "verification_mode": "recompute_to_temporary_files_and_compare",
+    "row_level_output_allowed": false
+  },
+  "classification_metrics": [
+    "accuracy",
+    "balanced_accuracy",
+    "macro_precision",
+    "macro_recall",
+    "macro_f1",
+    "per_class_precision",
+    "per_class_recall",
+    "per_class_f1",
+    "per_class_support",
+    "confusion_matrix"
+  ],
+  "reliability": {
+    "probability_source": "uncalibrated_predict_proba",
+    "fit_calibrator": false,
+    "metrics": [
+      "multiclass_log_loss",
+      "multiclass_brier_score",
+      "expected_calibration_error",
+      "maximum_calibration_error",
+      "high_confidence_error_count"
+    ],
+    "binning": {
+      "method": "equal_width",
+      "bin_count": 10
+    },
+    "high_confidence_threshold": 0.8
+  },
+  "development_ablation_models": [
+    "majority",
+    "camera_only",
+    "a1_only",
+    "a1_a2",
+    "camera_a1",
+    "camera_a2",
+    "camera_a1_a2"
+  ],
+  "missing_modality_policy": {
+    "camera_unavailable": "prediction_unavailable",
+    "camera_available_a1_unavailable": "use_camera_only",
+    "camera_available_a2_unavailable": "use_camera_only",
+    "camera_available_both_sensors_unavailable": "use_camera_only",
+    "all_modalities_unavailable": "prediction_unavailable",
+    "reuse_stale_prediction": false
+  },
+  "latency_benchmark": {
+    "clock": "perf_counter_ns",
+    "warmup_iterations": 100,
+    "measured_iterations": 1000,
+    "batch_sizes": [
+      1,
+      32,
+      256
+    ],
+    "percentiles": [
+      50,
+      95,
+      99
+    ],
+    "include_feature_flattening": true,
+    "include_pipeline_prediction": true,
+    "include_camera_capture_or_dashboard": false,
+    "record_host_and_runtime": true
+  },
+  "privacy_output": {
+    "aggregate_metrics_only": true,
+    "participant_ids": false,
+    "session_ids": false,
+    "track_ids": false,
+    "raw_features": false,
+    "raw_audio": false,
+    "raw_or_masked_video": false
+  }
+}

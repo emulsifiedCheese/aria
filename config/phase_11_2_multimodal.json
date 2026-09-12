@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "config_id": "zone-a-phase11.2-multimodal-v1",
+  "split_policy_id": "zone-a-phase10.3-external-test-loso-v1",
+  "random_seed": 3070,
+  "selection_metric": "macro_f1",
+  "class_labels": [
+    "Serving/Processing",
+    "Idle/Waiting",
+    "Reaching/Handling"
+  ],
+  "feature_sets": {
+    "camera_a1": [
+      "camera_available",
+      "pose_available",
+      "camera",
+      "a1_available",
+      "esp_a1"
+    ],
+    "camera_a2": [
+      "camera_available",
+      "pose_available",
+      "camera",
+      "a2_available",
+      "esp_a2"
+    ],
+    "camera_a1_a2": [
+      "camera_available",
+      "pose_available",
+      "camera",
+      "a1_available",
+      "a2_available",
+      "esp_a1",
+      "esp_a2"
+    ]
+  },
+  "random_forest_candidates": [
+    {
+      "n_estimators": 100,
+      "max_depth": 12,
+      "min_samples_leaf": 1,
+      "class_weight": "balanced_subsample"
+    },
+    {
+      "n_estimators": 100,
+      "max_depth": null,
+      "min_samples_leaf": 2,
+      "class_weight": "balanced_subsample"
+    },
+    {
+      "n_estimators": 200,
+      "max_depth": 18,
+      "min_samples_leaf": 2,
+      "class_weight": "balanced_subsample"
+    }
+  ],
+  "source_hashes": {
+    "participant_features_sha256": "8a2ff699a0a8d30b8d1a44d52ada2d0a9fd77b18429cb35c643c16ac0a5b116f",
+    "split_manifest_sha256": "b624ff13149b907b8a289e8d9923f414cabff335fe55f2a640dfdafa843abc77",
+    "split_audit_sha256": "d4f8bd522681c9b53288ffbd1fa4954a949756994f3966410ba40e5f7be2ad7f"
+  },
+  "baseline_reference": {
+    "config_id": "zone-a-phase11.1-baselines-v1",
+    "metrics_sha256": "5fd8654602a607346740bbd4acbbe2707ae8e0337a591406624d9632f26efbe8",
+    "macro_f1": {
+      "majority": 0.2604773729285968,
+      "camera_only": 0.4427914495497605,
+      "a1_only": 0.36882266528864976,
+      "a1_a2": 0.36995433498431324
+    }
+  }
+}

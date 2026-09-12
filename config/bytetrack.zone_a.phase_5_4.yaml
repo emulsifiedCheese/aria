@@ -1,0 +1,17 @@
+#aria zone a post tracking profile for controlled 5.4 trials
+#remains motion only tracking; no biometric or appearance reID
+tracker_type: bytetrack
+track_high_thresh: 0.25
+track_low_thresh: 0.1
+
+#preserve partially occluded subjects; pose plausibility filtering rejects weak non-person tracks after inference
+new_track_thresh: 0.25
+
+#retain lost identity for 45 processed frames
+#covers measured 36-39-frame short-occlusion gaps without attempting long-range reID
+track_buffer: 45
+
+#use accepted 5.2 association threshold
+#looser matching caused nearby subs to inherit each others IDs during overlap
+match_thresh: 0.8
+fuse_score: true

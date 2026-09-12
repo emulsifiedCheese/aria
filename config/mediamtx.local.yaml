@@ -1,0 +1,61 @@
+#local only bridge for camera wireless stream
+#cam publishes RTMP over site's uncontrolled public wifi network to the ingest path
+#localhost-only FFmpeg hook copies H264 track without re-encoding, drops all audio, and republishes to aria's live path
+#recording and browser playback protocols disabled
+
+logLevel: info
+logDestinations: [stdout]
+dumpPackets: false
+
+authMethod: internal
+authInternalUsers:
+  - user: any
+    pass:
+    ips: []
+    permissions:
+      - action: publish
+        path: ingest/camera_a
+  - user: any
+    pass:
+    ips: ["127.0.0.1", "::1"]
+    permissions:
+      - action: read
+        path: ingest/camera_a
+      - action: publish
+        path: live/camera_a
+      - action: read
+        path: live/camera_a
+
+api: false
+metrics: false
+pprof: false
+playback: false
+
+rtsp: true
+rtspAddress: 127.0.0.1:8554
+rtspTransports: [tcp]
+
+rtmp: true
+rtmpAddress: :1935
+rtmpEncryption: "no"
+
+hls: false
+webrtc: false
+srt: false
+moq: false
+
+paths:
+  ingest/camera_a:
+    source: publisher
+    record: false
+    runOnAvailable: >-
+      /opt/homebrew/bin/ffmpeg -nostdin -loglevel warning
+      -rtsp_transport tcp
+      -i rtsp://127.0.0.1:8554/ingest/camera_a
+      -map 0:v:0 -c:v copy -an
+      -f rtsp -rtsp_transport tcp
+      rtsp://127.0.0.1:8554/live/camera_a
+    runOnAvailableRestart: true
+  live/camera_a:
+    source: publisher
+    record: false

@@ -1,0 +1,96 @@
+profile_id: zone-a-collection-v5
+profile_version: 5
+frozen_at_sgt: "2026-08-04T23:54:44+08:00"
+supersedes: zone-a-collection-v4
+scope: consenting_counter_agents_zone_a
+
+settings:
+  camera_config: config/cameras.batamfast.yaml
+  mask_config: config/masks.batamfast.yaml
+  mediamtx_config: config/mediamtx.local.yaml
+  detector_model: yolov8n.pt
+  pose_model: yolov8n-pose.pt
+  tracker_config: config/bytetrack.zone_a.persistence.yaml
+  detector_confidence: 0.10
+  detector_iou: 0.70
+  pose_confidence: 0.15
+  keypoint_confidence: 0.5
+  min_confident_keypoints: 4
+  processing_fps: 15.0
+  inference_size: 768
+  pose_inference_size: 384
+  udp_port: 5005
+  window_seconds: 2.0
+  masked_track_preview: true
+  experimental_track_stitching: false
+  device: null
+
+deployment:
+  camera_id: camera_a
+  capture_mode: 1920x1080@30
+  mask_config_version: batamfast-v2
+  annotation_interface: participant_cards_dynamic_v2
+  physical_placement_authority: docs/hardware/live_site_setup.md
+  ethics_pack_version: "4.4"
+  esp_a1: {firmware_version: 1.1.1, sensor_config: A_PIR_US_MIC, local_udp_port: 4210}
+  esp_a2: {firmware_version: 1.1.1, sensor_config: A_PIR_MIC, local_udp_port: 4211}
+  maximum_session_minutes: 90
+  activity_schema_version: 3
+  activity_labels:
+    - Serving/Processing
+    - Idle/Waiting
+    - Reaching/Handling
+
+artifacts:
+  config/cameras.batamfast.yaml: 1b057b512b571bb3f65d0c1f470c653a453b9615b70bc154f93b4adebea7d8bf
+  config/masks.batamfast.yaml: afb994e95f892fe0115093fedda7132d1c8261209cfbde072c4b69a205ca39d5
+  config/mediamtx.local.yaml: 7e0f91c37b632bf93548795a2d59aee85ba576f1388ce30550e5a8b5e69e9773
+  config/bytetrack.zone_a.persistence.yaml: 320ee8e20c4ea5d118ba93c8f7911167bb5ab09a5d78b40a6052e1f9a8ab3985
+  yolov8n.pt: f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36
+  yolov8n-pose.pt: c6fa93dd1ee4a2c18c900a45c1d864a1c6f7aba75d84f91648a30b7fb641d212
+  firmware/esp_a/ESP_A_v1/ESP_A_v1.ino: 3660730f694073b4842c8c12711167c9431a4f91ec75240706064f6e26a77451
+  firmware/esp_a/ESP_A2_v1/ESP_A2_v1.ino: 4c7d68f3ccff3974d336d7f2feac5acde636a9cc44ba076171111a6bb5ea5abf
+  outputs/pdf/ARIA Ethics Pack_v4_4.pdf: 0f9793eaf135e20ebf346a652d6a26e7497c190100b6f4f63652236d45be64a0
+  schemas/annotation.schema.json: 8c0ea20399cd72b922bb156a6a5b4367cb9164cbf3125d0d5e0397e1401407e1
+  schemas/camera_track.schema.json: 19d1e898dbb55c37969eaa3f629670080cbcb726e2174ba762156cc1982e4327
+  schemas/esp_packet.schema.json: d25711fe9df6285e5cac58454da668e0a0c9e6a6257269329ebae2c57695c23f
+  schemas/esp_record.schema.json: a1d5ee886d046d5968e20b8593b996b6567a84c355c5c22e5acb1878b68ec280
+  schemas/feature_vector.schema.json: 410099c211d3fcd6119fb70b65841212345f96da51419c7e0143a963fdfab3d3
+  schemas/incident.schema.json: a370cc4c7adb4786152aa4e98307b7f41495b4389b8408249a232ea2abe37edf
+  schemas/prediction.schema.json: 3552680e125020888bc4f53a85215ccc82681c97b28362152d05e851e96607b5
+  schemas/session_manifest.schema.json: 8c356a47b70699ca8265de9d5560ed8f7295b657f63f123626304175c84bb2fc
+  docs/ethics/README.md: 199e4f26ae4eece79808e46e9237c4d7cf1874ba64a3415916ea4be1d2826ac7
+  docs/data_collection/session_protocol.md: 9bfe5b242374a72dae7da2e92ef3b43e44c463554d5a5ace9c80611d22469770
+  docs/data_collection/annotation_protocol.md: 95d86b3b08e10f0595bc15ed0185d4bb37dd456e65dd88388962fc96ce93fc1c
+  docs/data_collection/pre_session_checklist.md: 96d08f51d3a903fc5c11592070c34e1d01eecb420d7268f3f2ba794ccdafe021
+  docs/data_collection/post_session_checklist.md: a2787c30868cc7d5ce4c6cc0586512b28e7f0c72428795a7e1fd6463228afb3c
+  docs/data_collection/phase_9_3_three_class_candidate.md: 3898763d14c35c0d87d1c3eaded41323d1793e66f4a77b5a06a5c29102bc87a1
+  docs/data_collection/phase_9_3_v5_frozen_collection_settings.md: adf71ce8ae1ec032fb693107b5fb079d6af174c852e01ea990b0e442bb3ca7c4
+  docs/hardware/live_site_setup.md: b99bdb29b91c49e065ac2e1c7b5d8e00d817ace05540a4c6fb9060b16675ce87
+  docs/hardware/placement.md: 8430179633a1dfd06c5878e6450a8b99240ab4f1ccd2b62ba138cec65d939fcd
+  docs/privacy/customer_exclusion.md: 5468553bd72189adc5375d6b4074c1b07d018d542a8ef8fc60ca40c2b942aae1
+  docs/privacy/data_handling.md: 47a4398e1ac2fee2410eaa8b81522004e082601386cd7b1dcbe52afd9bd8f807
+  docs/privacy/masking_procedure.md: d64fc126756882ce920f1d667b1f446794c735fddd474433d72af2fb9c17b47c
+  docs/privacy/privacy_incident_procedure.md: 33666f175183fffda17c6e12e02b90684b920eb7ba752602e548eb3ea6a43615
+  docs/privacy/retention_schedule.md: 8ee5430e28ca61aef8edb1c05ac74db64f2eed23b0d8425f1433c71aac986c16
+  src/aria/timebase.py: 39c586a138c70ec0866b023faacd8e7cc72bea3fa3dcd707ab0f58eec65bea2f
+  src/aria/cameras/camera_manager.py: 31ed31cd4b9ca220e56a8af2e09b89ae43620d38567b23b7ffa6868cf1f90f71
+  src/aria/cameras/privacy_mask.py: 75e5d99cfbbfa7b1bcd418da8be875652098c217fd884b009be1496010eef657
+  src/aria/collection/activity_labels.py: 61b7b3ca9c1159f054ee4d6b3e7f80a467d753cb919b90ffd10b89cb13d3bde4
+  src/aria/collection/collection_profile.py: 74911e5fd61f1384b4ba61d4c62060d80801c0314a8248940d9432f85d1f2917
+  src/aria/collection/live_annotation.py: 33687e20504e7345e95e4497ecd279e9f3df26da7bd38dc801a7d1235ec92160
+  src/aria/collection/live_session.py: 9ebea2915a0e5b8b77984927665f83eceeba3c38410c03529df8256479b29bc1
+  src/aria/collection/lifecycle.py: 95c9b0bb02989bb103144dd477fa1ea38cee07c50e147a7c3b43aedd921c2347
+  src/aria/collection/manifest.py: b54674a9fead7028179fdd8762cf2c386db4eb943724b3d0cfd245aecb0d3e5c
+  src/aria/collection/masked_preview.py: 80b648336dac6aac3a647b906f6415758d56c9d1d5d96778f353adf6efa1a98e
+  src/aria/collection/preflight.py: d363c35d029890fea833aa5747226dc943980f96400227b014915f859396bba9
+  src/aria/collection/run_session.py: 53202640fe371128ca07f62431cf2ace25bd7e171d34864aa35f9a9c3f52062e
+  src/aria/fusion/window_builder.py: 3790c56ab87dcf87cfaa9c1c36070c27eba3ae676a84c841ec66bd14585bd3da
+  src/aria/ingestion/node_monitor.py: ba1f72c7318b86cda5d686777254eae88e9e5ccc9da02b4adec243058c91c381
+  src/aria/ingestion/packet_parser.py: 18b15683cff7b55830ce06439c45f10d97a7a91e5a7d88e1b0067fb608b9ee3c
+  src/aria/ingestion/record_schema.py: 809886e1ec5f537b0c7ebabcaee1ecf6b1af157b9aab4a4ab0e587a6e24df77c
+  src/aria/vision/detector.py: 890eaa8526c76c142361a7f30d11c950e34cac46f8c54d473bb7aad75e88b5ff
+  src/aria/vision/feature_writer.py: 3115090b5622ad4cd4d1614e66f7925a46ea3b55a9c367dc3203ba4b0f18eb90
+  src/aria/vision/pipeline.py: 8241bc47993bc6ed727e348e1050ca2f12a7efc4551262c39dbca1c712a0fcab
+  src/aria/vision/pose_estimator.py: 7a0a8d8e924d706d4b35a36e9ce55f5e57ec67e5b9a9331187feab5f82affb29
+  src/aria/vision/tracker.py: c6edb48d3bd80384867db41084393e6fe3240c9ed2cbe3615375b16be5742016

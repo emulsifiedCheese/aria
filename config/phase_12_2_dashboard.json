@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "config_id": "zone-a-phase12.2-dashboard-v1",
+  "status": "frozen_before_implementation",
+  "scope": {
+    "zone": "A",
+    "camera_id": "camera_a",
+    "active_sensor_nodes": [
+      "ESP-A1",
+      "ESP-A2"
+    ],
+    "participant_collection_allowed": false,
+    "accepted_input_scopes": [
+      "synthetic",
+      "non_research"
+    ]
+  },
+  "server": {
+    "host": "127.0.0.1",
+    "port": 8050,
+    "external_network_binding_allowed": false,
+    "debug_mode_allowed": false,
+    "refresh_interval_ms": 1000
+  },
+  "inputs": {
+    "dashboard_state_schema_path": "schemas/dashboard_state.schema.json",
+    "dashboard_state_schema_version": 1,
+    "dashboard_state_schema_sha256": "10a9dc94bd98cc436b4bb2056e02f3fefa9ad62260edced763cdff92f1cabb9d",
+    "prediction_schema_path": "schemas/prediction.schema.json",
+    "prediction_schema_version": 3,
+    "prediction_schema_sha256": "3552680e125020888bc4f53a85215ccc82681c97b28362152d05e851e96607b5",
+    "inference_contract_path": "config/phase_12_1_inference.json",
+    "inference_contract_sha256": "68fa975e859a386c32d991557a88303b1f403f23b5886ff4dbf5093c49befba8",
+    "camera_config_path": "config/cameras.batamfast.yaml",
+    "camera_config_sha256": "1b057b512b571bb3f65d0c1f470c653a453b9615b70bc154f93b4adebea7d8bf",
+    "mask_config_path": "config/masks.batamfast.yaml",
+    "mask_config_version": "batamfast-v2",
+    "mask_config_sha256": "afb994e95f892fe0115093fedda7132d1c8261209cfbde072c4b69a205ca39d5"
+  },
+  "state_policy": {
+    "dashboard_version": "zone-a-phase12.2-dashboard-v1",
+    "latest_prediction_per_local_track": true,
+    "cross_track_aggregation_allowed": false,
+    "prediction_stale_after_seconds": 5.0,
+    "camera_stale_after_seconds": 2.0,
+    "sensor_stale_after_seconds": 5.0,
+    "packet_loss_calculation": "cumulative_since_process_start",
+    "packet_loss_warning_percent": 2.0,
+    "packet_loss_warning_min_packets": 50,
+    "prediction_persistence_allowed": false,
+    "dashboard_snapshot_persistence_allowed": false,
+    "reuse_stale_prediction_as_current": false
+  },
+  "status_policy": {
+    "ready": "mask_verified_and_required_components_fresh",
+    "degraded": "component_or_prediction_unavailable_or_stale",
+    "blocked": "mask_unverified",
+    "mask_verified_required_for_privacy_ready": true,
+    "privacy_failure_precedes_operational_health": true
+  },
+  "presentation": {
+    "show_local_track_id": true,
+    "show_predicted_activity": true,
+    "show_confidence": true,
+    "confidence_label": "model confidence",
+    "confidence_transform": "none",
+    "confidence_threshold": null,
+    "show_unavailable_reason": true,
+    "show_modality_availability": true,
+    "show_camera_capture_fps": true,
+    "show_camera_processing_fps": true,
+    "show_mask_verified": true,
+    "show_sensor_freshness": true,
+    "show_sensor_packet_loss": true,
+    "show_warning_codes": true,
+    "warning_text_source": "fixed_local_code_dictionary",
+    "show_session_id": false,
+    "show_participant_id": false,
+    "show_participant_name": false,
+    "show_role_attribution": false,
+    "video_component_allowed": false,
+    "video_route_allowed": false
+  },
+  "privacy": {
+    "local_only": true,
+    "firebase_required": false,
+    "firebase_output_allowed": false,
+    "participant_identifiers_allowed": false,
+    "participant_names_allowed": false,
+    "role_attribution_allowed": false,
+    "raw_features_allowed": false,
+    "raw_audio_allowed": false,
+    "raw_video_allowed": false,
+    "masked_video_allowed": false,
+    "arbitrary_warning_text_allowed": false
+  },
+  "acceptance": {
+    "synthetic_or_non_research_only": true,
+    "participant_data_allowed": false,
+    "external_test_access_allowed": false,
+    "required_scenarios": [
+      "normal_single_track",
+      "normal_multiple_tracks",
+      "camera_unavailable",
+      "pose_unavailable",
+      "esp_a1_unavailable",
+      "esp_a2_unavailable",
+      "both_sensors_unavailable",
+      "all_modalities_unavailable",
+      "prediction_stale",
+      "sensor_stale",
+      "packet_loss_warning",
+      "mask_unverified",
+      "model_error",
+      "identical_prediction_retry"
+    ],
+    "privacy_scan_required": true,
+    "schema_validation_required": true,
+    "localhost_binding_required": true,
+    "no_video_component_or_route_required": true,
+    "synthetic_screenshots_required": true
+  }
+}

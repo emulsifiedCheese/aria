@@ -1,0 +1,19 @@
+#aria zone a experimental oc-sort profile v3 - non-research use only
+#the 4/8/2026 IoU-0.35 run had a 50-processed-frame detection gap and created a replacement track at confidence 0.372
+#profile must not be used for pilot or participant collection
+tracker_type: ocsort
+track_high_thresh: 0.25
+track_low_thresh: 0.1
+
+#requires stronger evidence before creating replacement trajectory
+new_track_thresh: 0.40
+
+#retain lost trajectory beyond observed 50-frame gap
+track_buffer: 60
+
+match_thresh: 0.8
+fuse_score: true
+
+delta_t: 3
+inertia: 0.2
+use_byte: true

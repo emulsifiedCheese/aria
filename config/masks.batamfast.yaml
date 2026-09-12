@@ -1,0 +1,36 @@
+masks:
+  camera_a:
+    camera_id: camera_a
+    mask_config_version: batamfast-v2
+    expected_width: 1920
+    expected_height: 1080
+    x: 0
+    y: 0
+    width: 1920
+    height: 1080
+    excluded_polygons:
+    - - - 541
+        - 2
+      - - 1375
+        - 0
+      - - 1345
+        - 225
+      - - 614
+        - 474
+    - - - 1878
+        - 0
+      - - 1919
+        - 0
+      - - 1919
+        - 1079
+      - - 1631
+        - 1079
+    - - - 0
+        - 6
+      - - 345
+        - 4
+      - - 609
+        - 1068
+      - - 8
+        - 1072
+    verified: true

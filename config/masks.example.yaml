@@ -1,0 +1,13 @@
+masks:
+  camera_a:
+    camera_id: camera_a
+    mask_config_version: example-v1
+    expected_width: 1920
+    expected_height: 1080
+    x: 240
+    y: 180
+    width: 1440
+    height: 720
+    excluded_polygons:
+      - [[480, 240], [720, 240], [720, 420], [480, 420]]
+    verified: false

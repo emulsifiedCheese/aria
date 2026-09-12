@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "config_id": "zone-a-phase12.3-firebase-v1",
+  "status": "frozen_before_implementation",
+  "scope": {
+    "zone": "A",
+    "firebase_required_for_final_product": true,
+    "participant_collection_allowed": false,
+    "participant_upload_authorized": false,
+    "accepted_development_input_scopes": [
+      "synthetic",
+      "non_research"
+    ],
+    "cloud_retraining_allowed": false,
+    "cloud_model_weight_updates_allowed": false
+  },
+  "firebase": {
+    "product": "realtime_database",
+    "project_id": "aria-e906f",
+    "database_region": "asia-southeast1",
+    "database_location_label": "Singapore",
+    "database_url": "https://aria-e906f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "root_path": "aria/schema_version_1",
+    "prediction_path_template": "aria/schema_version_1/predictions/{prediction_id}",
+    "acceptance_path_template": "aria/schema_version_1/acceptance/{acceptance_id}",
+    "storage_product_allowed": false,
+    "firestore_allowed": false,
+    "hosting_allowed": false
+  },
+  "inputs": {
+    "inference_contract_path": "config/phase_12_1_inference.json",
+    "inference_contract_sha256": "68fa975e859a386c32d991557a88303b1f403f23b5886ff4dbf5093c49befba8",
+    "prediction_schema_path": "schemas/prediction.schema.json",
+    "prediction_schema_version": 3,
+    "prediction_schema_sha256": "3552680e125020888bc4f53a85215ccc82681c97b28362152d05e851e96607b5",
+    "firebase_prediction_schema_path": "schemas/firebase_prediction.schema.json",
+    "firebase_prediction_schema_version": 1,
+    "firebase_prediction_schema_sha256": "26868be18217f9f698a966efb8898c8baa25b69234e4e6d43d76dfe7437392dc",
+    "database_rules_path": "config/firebase_realtime_database.rules.json",
+    "database_rules_sha256": "7748571cc997b5e535b9402df05b4956ce7671da2a422d4bcb7a360e8b95002e"
+  },
+  "authentication": {
+    "sdk": "firebase_admin_python",
+    "credential_environment_variable": "ARIA_FIREBASE_CREDENTIALS",
+    "credential_path_in_config_allowed": false,
+    "credential_contents_in_logs_allowed": false,
+    "credential_file_in_repository_allowed": false,
+    "database_auth_variable_override": {
+      "uid": "aria-phase12-3-sync"
+    },
+    "unrestricted_admin_access_allowed": false
+  },
+  "payload": {
+    "mode": "prediction_summary_only",
+    "allowed_fields": [
+      "schema_version",
+      "prediction_id",
+      "emitted_at_sgt",
+      "uploaded_at_sgt",
+      "zone",
+      "model_version",
+      "preprocessing_version",
+      "prediction_available",
+      "predicted_activity",
+      "confidence",
+      "unavailable_reason",
+      "availability"
+    ],
+    "conditional_fields_omitted_instead_of_null": true,
+    "feature_vectors_allowed": false,
+    "session_id_allowed": false,
+    "window_id_allowed": false,
+    "local_track_id_allowed": false,
+    "participant_identifiers_allowed": false,
+    "participant_names_allowed": false,
+    "participant_code_keys_allowed": false,
+    "role_attribution_allowed": false,
+    "raw_features_allowed": false,
+    "raw_audio_allowed": false,
+    "raw_video_allowed": false,
+    "masked_video_allowed": false,
+    "camera_frames_allowed": false,
+    "source_network_addresses_allowed": false,
+    "arbitrary_exception_text_allowed": false
+  },
+  "delivery": {
+    "firebase_failure_blocks_inference": false,
+    "firebase_failure_blocks_dashboard": false,
+    "local_operation_without_firebase_required": true,
+    "delivery_semantics": "at_least_once_with_idempotent_remote_key",
+    "remote_key": "prediction_id",
+    "remote_records_immutable": true,
+    "identical_retry_is_success": true,
+    "conflicting_retry_is_error": true,
+    "durable_local_outbox_required": true,
+    "outbox_path": "outputs/firebase_outbox",
+    "outbox_must_be_ignored_by_version_control": true,
+    "retry_backoff_seconds": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      30,
+      60
+    ],
+    "maximum_backoff_seconds": 60,
+    "delivery_order": "oldest_first",
+    "delete_outbox_record_after_verified_delivery": true
+  },
+  "retention": {
+    "participant_records_allowed": false,
+    "synthetic_acceptance_record_deleted_immediately_after_verification": true,
+    "runtime_cloud_retention_requires_separate_approval": true,
+    "automatic_model_training_from_cloud_records_allowed": false
+  },
+  "acceptance": {
+    "synthetic_only_for_live_cloud_acceptance": true,
+    "participant_data_allowed": false,
+    "external_test_access_allowed": false,
+    "database_rules_must_be_deployed_before_live_test": true,
+    "required_scenarios": [
+      "available_prediction_upload",
+      "unavailable_prediction_upload",
+      "forbidden_field_rejected_locally",
+      "invalid_schema_rejected_locally",
+      "identical_retry_is_idempotent",
+      "conflicting_retry_is_rejected",
+      "offline_write_is_queued",
+      "queued_write_is_delivered_after_recovery",
+      "inference_continues_during_firebase_failure",
+      "dashboard_continues_during_firebase_failure",
+      "unauthorized_database_access_is_denied",
+      "synthetic_live_write_read_delete"
+    ],
+    "privacy_scan_required": true,
+    "schema_validation_required": true,
+    "rules_emulator_test_required": true,
+    "live_database_test_required": true,
+    "live_test_record_must_be_deleted": true,
+    "credential_scan_required": true
+  }
+}

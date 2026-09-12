@@ -1,0 +1,14 @@
+#dev-only full-frame masks for non-research test video
+#dont use these settings for participant data collection
+
+masks:
+  camera_a:
+    camera_id: camera_a
+    mask_config_version: development-v1
+    expected_width: 1920
+    expected_height: 1080
+    x: 0
+    y: 0
+    width: 1920
+    height: 1080
+    verified: true

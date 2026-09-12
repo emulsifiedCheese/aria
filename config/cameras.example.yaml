@@ -1,0 +1,10 @@
+cameras:
+  - camera_id: camera_a
+    camera_model: DJI Osmo Action 5 Pro
+    transport: wireless_rtsp
+    zone: A
+    source: rtsp://127.0.0.1:8554/live/camera_a
+    width: 1920
+    height: 1080
+    fps: 30
+    privacy_mask_status: not_configured

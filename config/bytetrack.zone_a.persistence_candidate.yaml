@@ -1,0 +1,12 @@
+#aria zone a 9.1 controlled test candidate. dont use for participant collection unless complete s1-s4 comparison passes and accepted live profile is updated with documented evidence
+tracker_type: bytetrack
+track_high_thresh: 0.25
+track_low_thresh: 0.1
+new_track_thresh: 0.25
+track_buffer: 90
+
+#accepted profile uses 0.90. isolate 9.1 failure created new high-confidence id after short gap despite substantial box overlap
+#test single, slightly more permissive association change before altering other thresholds
+#s4 must reject candidate if it causes cross subject swaps
+match_thresh: 0.95
+fuse_score: false

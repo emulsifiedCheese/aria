@@ -1,0 +1,18 @@
+#zone a motion-only overlap comparison for controlled 5.4 trials
+#appearance and biometric re-id explicitly disable
+tracker_type: botsort
+track_high_thresh: 0.25
+track_low_thresh: 0.1
+new_track_thresh: 0.25
+track_buffer: 45
+match_thresh: 0.8
+fuse_score: true
+
+#cam a is fixed, global cam motion compensation unnecessary
+gmc_method: none
+
+#retained for ultralytics schema compatibility - unused while reID is disabled
+proximity_thresh: 0.5
+appearance_thresh: 0.8
+with_reid: false
+model: auto

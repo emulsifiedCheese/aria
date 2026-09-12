@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "config_id": "zone-a-phase12.1-local-inference-v1",
+  "scope": {
+    "zone": "A",
+    "camera_id": "camera_a",
+    "active_sensor_nodes": [
+      "ESP-A1",
+      "ESP-A2"
+    ],
+    "prediction_granularity": "completed_two_second_window_per_local_track",
+    "participant_collection_allowed": false
+  },
+  "model": {
+    "name": "camera_only",
+    "version": "zone-a-camera-only-rf-v1",
+    "source_phase": "11.1",
+    "artifact_path": "models/phase_11_1/camera_only.joblib",
+    "artifact_sha256": "5c42e8c0d9639271f7e38c9108ba0017dd3acb1f38b3f36ef510e33c6e9fa78c",
+    "class_labels": [
+      "Serving/Processing",
+      "Idle/Waiting",
+      "Reaching/Handling"
+    ],
+    "fit_allowed": false,
+    "calibration_allowed": false,
+    "parameter_changes_allowed": false,
+    "fallback_model_allowed": false,
+    "probability_source": "unchanged_predict_proba",
+    "confidence_method": "maximum_class_probability",
+    "confidence_threshold": null
+  },
+  "preprocessing": {
+    "version": "zone-a-phase12.1-single-track-window-v1",
+    "feature_schema_path": "schemas/feature_vector.schema.json",
+    "feature_schema_version": 2,
+    "feature_schema_sha256": "410099c211d3fcd6119fb70b65841212345f96da51419c7e0143a963fdfab3d3",
+    "prediction_schema_path": "schemas/prediction.schema.json",
+    "prediction_schema_version": 3,
+    "prediction_schema_sha256": "3552680e125020888bc4f53a85215ccc82681c97b28362152d05e851e96607b5",
+    "window_duration_ms": 2000,
+    "keypoint_confidence_threshold": 0.5,
+    "track_scope": "one_local_track_id",
+    "cross_track_aggregation_allowed": false,
+    "feature_roots": [
+      "camera_available",
+      "pose_available",
+      "camera"
+    ],
+    "feature_names": [
+      "camera.available",
+      "camera.available_frame_count",
+      "camera.bbox_center_x_mean_px",
+      "camera.bbox_center_y_mean_px",
+      "camera.detection_confidence_mean",
+      "camera.frame_count",
+      "camera.frame_number_gap_count",
+      "camera.joint_angle_mean_degrees",
+      "camera.keypoint_confidence_mean",
+      "camera.movement_speed_mean_px_per_second",
+      "camera.pose_availability_ratio",
+      "camera.pose_available_count",
+      "camera.pose_missing_count",
+      "camera.record_count",
+      "camera.timing.interval_count",
+      "camera.timing.interval_std_ms",
+      "camera.timing.mean_absolute_jitter_ms",
+      "camera.timing.mean_interval_ms",
+      "camera.track_record_count",
+      "camera.unavailable_frame_count",
+      "camera.unique_track_count",
+      "camera_available",
+      "pose_available"
+    ],
+    "missing_numeric_value": "null_to_nan_then_frozen_pipeline_median_imputation",
+    "feature_order_changes_allowed": false
+  },
+  "missing_modality_policy": {
+    "camera_unavailable": "prediction_unavailable",
+    "camera_available_pose_unavailable": "use_camera_only_with_pose_unavailable",
+    "camera_available_a1_unavailable": "use_camera_only",
+    "camera_available_a2_unavailable": "use_camera_only",
+    "camera_available_both_sensors_unavailable": "use_camera_only",
+    "all_modalities_unavailable": "prediction_unavailable",
+    "reuse_stale_prediction": false
+  },
+  "output": {
+    "local_only": true,
+    "schema_path": "schemas/prediction.schema.json",
+    "one_record_per_completed_window_and_local_track": true,
+    "unavailable_activity": null,
+    "unavailable_confidence": null,
+    "camera_unavailable_reason": "missing_camera_track",
+    "model_failure_reason": "model_error",
+    "include_availability": [
+      "camera_available",
+      "pose_available",
+      "esp_a1_available",
+      "esp_a2_available"
+    ]
+  },
+  "privacy": {
+    "participant_ids_allowed": false,
+    "participant_names_allowed": false,
+    "role_attribution_allowed": false,
+    "raw_features_retained": false,
+    "raw_audio_retained": false,
+    "raw_or_masked_video_retained_by_inference": false,
+    "firebase_required": false
+  }
+}
