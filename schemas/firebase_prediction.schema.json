@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/firebase_prediction.schema.json",
+  "title": "ARIA Zone A Firebase Prediction Summary",
+  "description": "Non-identifying prediction summary permitted at the Phase 12.3 Firebase boundary.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "prediction_id",
+    "emitted_at_sgt",
+    "uploaded_at_sgt",
+    "zone",
+    "model_version",
+    "preprocessing_version",
+    "prediction_available",
+    "availability"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "prediction_id": {
+      "type": "string",
+      "pattern": "^prediction_[a-z0-9_-]{4,64}$"
+    },
+    "emitted_at_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "uploaded_at_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "zone": {
+      "type": "string",
+      "const": "A"
+    },
+    "model_version": {
+      "type": "string",
+      "const": "zone-a-camera-only-rf-v1"
+    },
+    "preprocessing_version": {
+      "type": "string",
+      "const": "zone-a-phase12.1-single-track-window-v1"
+    },
+    "prediction_available": {
+      "type": "boolean"
+    },
+    "predicted_activity": {
+      "$ref": "#/$defs/activity"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "unavailable_reason": {
+      "type": "string",
+      "enum": [
+        "excluded_interval",
+        "insufficient_modalities",
+        "missing_camera_track",
+        "low_confidence",
+        "model_error"
+      ]
+    },
+    "availability": {
+      "$ref": "#/$defs/availability"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "prediction_available": {
+            "const": true
+          }
+        },
+        "required": [
+          "prediction_available"
+        ]
+      },
+      "then": {
+        "required": [
+          "predicted_activity",
+          "confidence"
+        ],
+        "not": {
+          "required": [
+            "unavailable_reason"
+          ]
+        }
+      },
+      "else": {
+        "required": [
+          "unavailable_reason"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "predicted_activity"
+              ]
+            },
+            {
+              "required": [
+                "confidence"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "activity": {
+      "type": "string",
+      "enum": [
+        "Serving/Processing",
+        "Idle/Waiting",
+        "Reaching/Handling"
+      ]
+    },
+    "availability": {
+      "type": "object",
+      "required": [
+        "camera_available",
+        "pose_available",
+        "esp_a1_available",
+        "esp_a2_available"
+      ],
+      "properties": {
+        "camera_available": {
+          "type": "boolean"
+        },
+        "pose_available": {
+          "type": "boolean"
+        },
+        "esp_a1_available": {
+          "type": "boolean"
+        },
+        "esp_a2_available": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,493 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/incident.schema.json",
+  "title": "ARIA Zone A Collection Incident",
+  "description": "Non-identifying technical, privacy and exclusion record for a Zone A session. Free-text identity fields are intentionally prohibited.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "incident_id",
+    "session_id",
+    "zone",
+    "incident_type",
+    "severity",
+    "status",
+    "started_at_sgt",
+    "ended_at_sgt",
+    "affected_window_ids",
+    "actions",
+    "deletion_required",
+    "deletion_completed",
+    "deletion_completed_at_sgt",
+    "recovery_verified",
+    "resumed_at_sgt",
+    "operator_role"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 5
+    },
+    "incident_id": {
+      "type": "string",
+      "pattern": "^incident_[a-z0-9_-]{4,64}$"
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^zone_a_[0-9]{8}T[0-9]{6}SGT_[a-z0-9]{4,16}$"
+    },
+    "zone": {
+      "type": "string",
+      "const": "A"
+    },
+    "incident_type": {
+      "type": "string",
+      "enum": [
+        "non_participant_entry",
+        "privacy_boundary_breach",
+        "camera_movement",
+        "mask_failure",
+        "camera_stream_loss",
+        "esp_a1_loss",
+        "esp_a2_loss",
+        "storage_failure",
+        "equipment_failure"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "privacy_critical",
+        "operational"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "resolved"
+      ]
+    },
+    "started_at_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "ended_at_sgt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "affected_window_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^zone_a_[0-9]+_[0-9]+$"
+      },
+      "uniqueItems": true
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "collection_refused",
+          "collection_paused",
+          "session_aborted",
+          "interval_excluded",
+          "affected_data_isolated",
+          "affected_data_deleted",
+          "camera_reverified",
+          "mask_reverified",
+          "stream_recovered",
+          "node_recovered",
+          "storage_recovered",
+          "retained_region_cleared",
+          "privacy_boundary_restored",
+          "equipment_recovered",
+          "no_data_written"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "deletion_required": {
+      "type": "boolean"
+    },
+    "deletion_completed": {
+      "type": "boolean"
+    },
+    "deletion_completed_at_sgt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "recovery_verified": {
+      "type": "boolean"
+    },
+    "resumed_at_sgt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "operator_role": {
+      "type": "string",
+      "const": "student_researcher"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "incident_type": {
+            "enum": [
+              "non_participant_entry",
+              "privacy_boundary_breach",
+              "camera_movement",
+              "mask_failure"
+            ]
+          }
+        },
+        "required": [
+          "incident_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "severity": {
+            "const": "privacy_critical"
+          },
+          "deletion_required": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "resolved"
+          },
+          "incident_type": {
+            "enum": [
+              "non_participant_entry",
+              "privacy_boundary_breach",
+              "camera_movement",
+              "mask_failure"
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "incident_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "deletion_completed": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "resolved"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "ended_at_sgt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "\\+08:00$"
+          },
+          "recovery_verified": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "deletion_completed": {
+            "const": true
+          }
+        },
+        "required": [
+          "deletion_completed"
+        ]
+      },
+      "then": {
+        "properties": {
+          "deletion_completed_at_sgt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "\\+08:00$"
+          },
+          "actions": {
+            "contains": {
+              "const": "affected_data_deleted"
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "deletion_completed_at_sgt": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "deletion_required": {
+            "const": false
+          }
+        },
+        "required": [
+          "deletion_required"
+        ]
+      },
+      "then": {
+        "properties": {
+          "deletion_completed": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "resolved"
+          },
+          "incident_type": {
+            "const": "non_participant_entry"
+          }
+        },
+        "required": [
+          "status",
+          "incident_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "actions": {
+            "contains": {
+              "const": "retained_region_cleared"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "resolved"
+          },
+          "incident_type": {
+            "const": "privacy_boundary_breach"
+          }
+        },
+        "required": [
+          "status",
+          "incident_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "actions": {
+            "contains": {
+              "const": "privacy_boundary_restored"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "resolved"
+          },
+          "incident_type": {
+            "const": "camera_movement"
+          }
+        },
+        "required": [
+          "status",
+          "incident_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "actions": {
+            "allOf": [
+              {
+                "contains": {
+                  "const": "camera_reverified"
+                }
+              },
+              {
+                "contains": {
+                  "const": "mask_reverified"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "resolved"
+          },
+          "incident_type": {
+            "const": "mask_failure"
+          }
+        },
+        "required": [
+          "status",
+          "incident_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "actions": {
+            "contains": {
+              "const": "mask_reverified"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "resolved"
+          },
+          "incident_type": {
+            "const": "camera_stream_loss"
+          }
+        },
+        "required": [
+          "status",
+          "incident_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "actions": {
+            "contains": {
+              "const": "stream_recovered"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "resolved"
+          },
+          "incident_type": {
+            "enum": [
+              "esp_a1_loss",
+              "esp_a2_loss"
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "incident_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "actions": {
+            "contains": {
+              "const": "node_recovered"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "resolved"
+          },
+          "incident_type": {
+            "const": "storage_failure"
+          }
+        },
+        "required": [
+          "status",
+          "incident_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "actions": {
+            "contains": {
+              "const": "storage_recovered"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "resolved"
+          },
+          "incident_type": {
+            "const": "equipment_failure"
+          }
+        },
+        "required": [
+          "status",
+          "incident_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "actions": {
+            "contains": {
+              "const": "equipment_recovered"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

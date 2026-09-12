@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/esp_record.schema.json",
+  "title": "ARIA Stored ESP Receiver Record",
+  "description": "A local SGT receive envelope around one schema-valid ESP-A1 or ESP-A2 telemetry payload.",
+  "type": "object",
+  "required": [
+    "received_at_sgt",
+    "source_ip",
+    "source_port",
+    "payload"
+  ],
+  "properties": {
+    "received_at_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "source_ip": {
+      "type": "string",
+      "format": "ipv4"
+    },
+    "source_port": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "payload": {
+      "$ref": "https://aria.local/schemas/esp_packet.schema.json"
+    }
+  },
+  "additionalProperties": false
+}

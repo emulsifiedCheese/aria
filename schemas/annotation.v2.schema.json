@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/annotation.schema.json",
+  "title": "ARIA Zone A Activity Annotation",
+  "description": "Role-neutral annotation for one consenting Counter Agent track over one or more Zone A multimodal windows. It contains pseudonymised identifiers and no image, audio or identity data.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "annotation_id",
+    "session_id",
+    "zone",
+    "participant_id",
+    "local_track_id",
+    "window_ids",
+    "interval_start_sgt",
+    "interval_end_sgt",
+    "label_status",
+    "activity",
+    "exclusion_reason",
+    "usable_for_modelling",
+    "annotator_id",
+    "created_at_sgt"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 2
+    },
+    "annotation_id": {
+      "type": "string",
+      "pattern": "^annotation_[a-z0-9_-]{4,64}$"
+    },
+    "session_id": {
+      "$ref": "#/$defs/sessionId"
+    },
+    "zone": {
+      "type": "string",
+      "const": "A"
+    },
+    "participant_id": {
+      "type": "string",
+      "pattern": "^P[0-9]{4}$"
+    },
+    "local_track_id": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "window_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^zone_a_[0-9]+_[0-9]+$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "interval_start_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "interval_end_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "label_status": {
+      "type": "string",
+      "enum": [
+        "labelled",
+        "uncertain",
+        "excluded"
+      ]
+    },
+    "activity": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/activity"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "exclusion_reason": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/nonUsableReason"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "usable_for_modelling": {
+      "type": "boolean"
+    },
+    "annotator_id": {
+      "type": "string",
+      "pattern": "^A[0-9]{3}$"
+    },
+    "created_at_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "label_status": {
+            "const": "labelled"
+          }
+        },
+        "required": [
+          "label_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "activity": {
+            "$ref": "#/$defs/activity"
+          },
+          "exclusion_reason": {
+            "type": "null"
+          },
+          "usable_for_modelling": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "label_status": {
+            "enum": [
+              "uncertain",
+              "excluded"
+            ]
+          }
+        },
+        "required": [
+          "label_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exclusion_reason": {
+            "$ref": "#/$defs/nonUsableReason"
+          },
+          "usable_for_modelling": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "label_status": {
+            "const": "excluded"
+          }
+        },
+        "required": [
+          "label_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "activity": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "sessionId": {
+      "type": "string",
+      "pattern": "^zone_a_[0-9]{8}T[0-9]{6}SGT_[a-z0-9]{4,16}$"
+    },
+    "activity": {
+      "type": "string",
+      "enum": [
+        "Serving",
+        "Typing/Processing",
+        "Idle/Waiting",
+        "Reaching/Handling"
+      ]
+    },
+    "nonUsableReason": {
+      "type": "string",
+      "enum": [
+        "ambiguous_activity",
+        "occluded_pose",
+        "missing_modality",
+        "non_participant",
+        "privacy_incident",
+        "mask_failure",
+        "stream_gap",
+        "equipment_failure",
+        "outside_approved_scope"
+      ]
+    }
+  }
+}
+

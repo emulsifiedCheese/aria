@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/phase_10_2_exclusion.schema.json",
+  "title": "ARIA Phase 10.2 Excluded Participant Window",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "session_id",
+    "participant_id",
+    "window_id",
+    "source_annotation_id",
+    "exclusion_reason"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "session_id": {
+      "type": "string",
+      "pattern": "^zone_a_[0-9]{8}T[0-9]{6}SGT_[a-z0-9]{4,16}$"
+    },
+    "participant_id": {"type": "string", "pattern": "^P[0-9]{4}$"},
+    "window_id": {"type": "string", "pattern": "^zone_a_[0-9]+_2000$"},
+    "source_annotation_id": {"type": "string", "minLength": 1},
+    "exclusion_reason": {
+      "type": "string",
+      "enum": [
+        "source_uncertain",
+        "source_excluded",
+        "selected_track_absent",
+        "conflicting_track_assignment",
+        "incident_affected"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

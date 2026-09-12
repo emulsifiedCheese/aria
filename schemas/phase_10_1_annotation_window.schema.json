@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/phase_10_1_annotation_window.schema.json",
+  "title": "ARIA Phase 10.1 Normalised Annotation Window",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "session_id",
+    "participant_id",
+    "local_track_id",
+    "window_id",
+    "window_start_sgt",
+    "window_end_sgt",
+    "source_annotation_id",
+    "source_annotation_schema_version",
+    "source_activity",
+    "derived_activity",
+    "source_label_status",
+    "source_exclusion_reason",
+    "track_present",
+    "incident_affected",
+    "usable_for_modelling",
+    "phase_10_exclusion_reason"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "session_id": {
+      "type": "string",
+      "pattern": "^zone_a_[0-9]{8}T[0-9]{6}SGT_[a-z0-9]{4,16}$"
+    },
+    "participant_id": {"type": "string", "pattern": "^P[0-9]{4}$"},
+    "local_track_id": {"type": "integer", "minimum": 0},
+    "window_id": {"type": "string", "pattern": "^zone_a_[0-9]+_2000$"},
+    "window_start_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "window_end_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "source_annotation_id": {"type": "string", "minLength": 1},
+    "source_annotation_schema_version": {"type": "integer", "enum": [2, 3]},
+    "source_activity": {
+      "type": ["string", "null"],
+      "enum": [
+        "Serving",
+        "Typing/Processing",
+        "Serving/Processing",
+        "Idle/Waiting",
+        "Reaching/Handling",
+        null
+      ]
+    },
+    "derived_activity": {
+      "type": ["string", "null"],
+      "enum": [
+        "Serving/Processing",
+        "Idle/Waiting",
+        "Reaching/Handling",
+        null
+      ]
+    },
+    "source_label_status": {
+      "type": "string",
+      "enum": ["labelled", "uncertain", "excluded"]
+    },
+    "source_exclusion_reason": {"type": ["string", "null"]},
+    "track_present": {"type": "boolean"},
+    "incident_affected": {"type": "boolean"},
+    "usable_for_modelling": {"type": "boolean"},
+    "phase_10_exclusion_reason": {
+      "type": ["string", "null"],
+      "enum": [
+        "source_uncertain",
+        "source_excluded",
+        "selected_track_absent",
+        "conflicting_track_assignment",
+        "incident_affected",
+        null
+      ]
+    }
+  },
+  "additionalProperties": false
+}

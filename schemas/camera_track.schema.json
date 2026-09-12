@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/camera_track.schema.json",
+  "title": "ARIA Zone A Camera Frame and Track Record",
+  "description": "Privacy-masked Camera A availability, tracking and skeletal-feature records. Records contain numerical features only and no image data or biometric identity.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "record_type",
+    "camera_id",
+    "zone",
+    "frame_number",
+    "frame_timestamp_sgt",
+    "frame_available",
+    "pose_available",
+    "local_track_id",
+    "bounding_box",
+    "detection_confidence",
+    "keypoints",
+    "keypoint_confidences",
+    "capture_latency_ms",
+    "detection_latency_ms",
+    "pose_latency_ms",
+    "total_latency_ms",
+    "mask_config_version"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 2
+    },
+    "record_type": {
+      "type": "string",
+      "enum": [
+        "frame_status",
+        "track"
+      ]
+    },
+    "camera_id": {
+      "type": "string",
+      "const": "camera_a"
+    },
+    "zone": {
+      "type": "string",
+      "const": "A"
+    },
+    "frame_number": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "frame_timestamp_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "frame_available": {
+      "type": "boolean"
+    },
+    "pose_available": {
+      "type": "boolean"
+    },
+    "local_track_id": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "stitched_track_id": {
+      "description": "Experimental anonymous trajectory ID. Null means the association is uncertain. Raw local_track_id remains authoritative evidence.",
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "track_association_status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "continued",
+        "stitched",
+        "uncertain"
+      ]
+    },
+    "track_association_reason": {
+      "type": "string",
+      "enum": [
+        "new_track",
+        "existing_raw_id",
+        "unique_spatiotemporal_match",
+        "simultaneous_overlap",
+        "multiple_candidates",
+        "canonical_collision"
+      ]
+    },
+    "bounding_box": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "detection_confidence": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "keypoints": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "keypoint_confidences": {
+      "type": "array",
+      "items": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "minimum": 0,
+        "maximum": 1
+      }
+    },
+    "capture_latency_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "detection_latency_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "pose_latency_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "total_latency_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "mask_config_version": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "record_type": {
+            "const": "track"
+          }
+        },
+        "required": [
+          "record_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "frame_available": {
+            "const": true
+          },
+          "local_track_id": {
+            "type": "integer"
+          },
+          "bounding_box": {
+            "type": "array"
+          },
+          "detection_confidence": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "record_type": {
+            "const": "frame_status"
+          }
+        },
+        "required": [
+          "record_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "pose_available": {
+            "const": false
+          },
+          "local_track_id": {
+            "type": "null"
+          },
+          "bounding_box": {
+            "type": "null"
+          },
+          "detection_confidence": {
+            "type": "null"
+          },
+          "keypoints": {
+            "maxItems": 0
+          },
+          "keypoint_confidences": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "track_association_status": {
+            "const": "uncertain"
+          }
+        },
+        "required": [
+          "track_association_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "stitched_track_id": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "if": {
+          "required": [
+            "track_association_status"
+          ]
+        },
+        "then": {
+          "properties": {
+            "stitched_track_id": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "dependentRequired": {
+    "stitched_track_id": [
+      "track_association_status",
+      "track_association_reason"
+    ],
+    "track_association_status": [
+      "stitched_track_id",
+      "track_association_reason"
+    ],
+    "track_association_reason": [
+      "stitched_track_id",
+      "track_association_status"
+    ]
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/dashboard_state.schema.json",
+  "title": "ARIA Zone A Privacy-Aware Dashboard State",
+  "description": "Local, non-identifying activity and component-health snapshot for the Phase 12.2 dashboard.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "snapshot_id",
+    "dashboard_version",
+    "generated_at_sgt",
+    "zone",
+    "overall_status",
+    "privacy",
+    "camera",
+    "sensors",
+    "predictions",
+    "warnings"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "snapshot_id": {"type": "string", "pattern": "^dashboard_[a-f0-9]{16}$"},
+    "dashboard_version": {"type": "string", "const": "zone-a-phase12.2-dashboard-v1"},
+    "generated_at_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "zone": {"type": "string", "const": "A"},
+    "overall_status": {
+      "type": "string",
+      "enum": ["ready", "degraded", "blocked"]
+    },
+    "privacy": {
+      "type": "object",
+      "required": ["local_only", "mask_verified", "privacy_ready", "video_enabled"],
+      "properties": {
+        "local_only": {"type": "boolean", "const": true},
+        "mask_verified": {"type": "boolean"},
+        "privacy_ready": {"type": "boolean"},
+        "video_enabled": {"type": "boolean", "const": false}
+      },
+      "additionalProperties": false
+    },
+    "camera": {
+      "type": "object",
+      "required": [
+        "camera_id",
+        "available",
+        "fresh",
+        "last_frame_at_sgt",
+        "age_seconds",
+        "capture_fps",
+        "processing_fps",
+        "mask_verified"
+      ],
+      "properties": {
+        "camera_id": {"type": "string", "const": "camera_a"},
+        "available": {"type": "boolean"},
+        "fresh": {"type": "boolean"},
+        "last_frame_at_sgt": {
+          "oneOf": [
+            {"type": "string", "format": "date-time", "pattern": "\\+08:00$"},
+            {"type": "null"}
+          ]
+        },
+        "age_seconds": {
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "capture_fps": {
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "processing_fps": {
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "mask_verified": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "sensors": {
+      "type": "object",
+      "required": ["ESP-A1", "ESP-A2"],
+      "properties": {
+        "ESP-A1": {"$ref": "#/$defs/sensorHealth"},
+        "ESP-A2": {"$ref": "#/$defs/sensorHealth"}
+      },
+      "additionalProperties": false
+    },
+    "predictions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/predictionSummary"}
+    },
+    "warnings": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/warning"}
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sensorHealth": {
+      "type": "object",
+      "required": [
+        "available",
+        "fresh",
+        "stale",
+        "last_received_at_sgt",
+        "age_seconds",
+        "packets_received",
+        "packet_gap_events",
+        "estimated_packets_lost",
+        "packet_loss_percent"
+      ],
+      "properties": {
+        "available": {"type": "boolean"},
+        "fresh": {"type": "boolean"},
+        "stale": {"type": "boolean"},
+        "last_received_at_sgt": {
+          "oneOf": [
+            {"type": "string", "format": "date-time", "pattern": "\\+08:00$"},
+            {"type": "null"}
+          ]
+        },
+        "age_seconds": {"type": ["number", "null"], "minimum": 0},
+        "packets_received": {"type": "integer", "minimum": 0},
+        "packet_gap_events": {"type": "integer", "minimum": 0},
+        "estimated_packets_lost": {"type": "integer", "minimum": 0},
+        "packet_loss_percent": {"type": ["number", "null"], "minimum": 0, "maximum": 100}
+      },
+      "additionalProperties": false
+    },
+    "availability": {
+      "type": "object",
+      "required": ["camera_available", "pose_available", "esp_a1_available", "esp_a2_available"],
+      "properties": {
+        "camera_available": {"type": "boolean"},
+        "pose_available": {"type": "boolean"},
+        "esp_a1_available": {"type": "boolean"},
+        "esp_a2_available": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "predictionSummary": {
+      "type": "object",
+      "required": [
+        "prediction_id",
+        "window_id",
+        "local_track_id",
+        "emitted_at_sgt",
+        "age_seconds",
+        "stale",
+        "prediction_available",
+        "predicted_activity",
+        "confidence",
+        "unavailable_reason",
+        "availability"
+      ],
+      "properties": {
+        "prediction_id": {"type": "string", "pattern": "^prediction_[a-z0-9_-]{4,64}$"},
+        "window_id": {"type": "string", "pattern": "^zone_a_[0-9]+_[0-9]+$"},
+        "local_track_id": {"type": ["integer", "null"], "minimum": 0},
+        "emitted_at_sgt": {"type": "string", "format": "date-time", "pattern": "\\+08:00$"},
+        "age_seconds": {"type": "number", "minimum": 0},
+        "stale": {"type": "boolean"},
+        "prediction_available": {"type": "boolean"},
+        "predicted_activity": {
+          "oneOf": [
+            {"$ref": "#/$defs/activity"},
+            {"type": "null"}
+          ]
+        },
+        "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "unavailable_reason": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "excluded_interval",
+                "insufficient_modalities",
+                "missing_camera_track",
+                "low_confidence",
+                "model_error"
+              ]
+            },
+            {"type": "null"}
+          ]
+        },
+        "availability": {"$ref": "#/$defs/availability"}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"prediction_available": {"const": true}},
+            "required": ["prediction_available"]
+          },
+          "then": {
+            "properties": {
+              "local_track_id": {"type": "integer", "minimum": 0},
+              "predicted_activity": {"$ref": "#/$defs/activity"},
+              "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+              "unavailable_reason": {"type": "null"}
+            }
+          },
+          "else": {
+            "properties": {
+              "predicted_activity": {"type": "null"},
+              "confidence": {"type": "null"},
+              "unavailable_reason": {"type": "string"}
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "warning": {
+      "type": "object",
+      "required": ["code", "severity", "source"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "mask_unverified",
+            "camera_unavailable",
+            "camera_stale",
+            "esp_a1_unavailable",
+            "esp_a1_stale",
+            "esp_a1_packet_loss",
+            "esp_a2_unavailable",
+            "esp_a2_stale",
+            "esp_a2_packet_loss",
+            "pose_unavailable",
+            "prediction_unavailable",
+            "prediction_stale",
+            "model_error"
+          ]
+        },
+        "severity": {"type": "string", "enum": ["info", "warning", "critical"]},
+        "source": {
+          "type": "string",
+          "enum": ["privacy", "camera_a", "ESP-A1", "ESP-A2", "inference"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "activity": {
+      "type": "string",
+      "enum": ["Serving/Processing", "Idle/Waiting", "Reaching/Handling"]
+    }
+  }
+}

@@ -1,0 +1,361 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/feature_vector.schema.json",
+  "title": "ARIA Zone A Multimodal Feature Window",
+  "description": "A deterministic, privacy-preserving Camera A and ESP-A1/A2 feature window. Missing numerical observations are null, never synthetic zero.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "window_id",
+    "zone",
+    "window_start_sgt",
+    "window_end_sgt",
+    "window_duration_ms",
+    "camera_available",
+    "pose_available",
+    "a1_available",
+    "a2_available",
+    "camera",
+    "esp_a1",
+    "esp_a2"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 2
+    },
+    "window_id": {
+      "type": "string",
+      "pattern": "^zone_a_[0-9]+_[0-9]+$"
+    },
+    "zone": {
+      "type": "string",
+      "const": "A"
+    },
+    "window_start_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "window_end_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "window_duration_ms": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "camera_available": {
+      "type": "boolean"
+    },
+    "pose_available": {
+      "type": "boolean"
+    },
+    "a1_available": {
+      "type": "boolean"
+    },
+    "a2_available": {
+      "type": "boolean"
+    },
+    "camera": {
+      "$ref": "#/$defs/cameraFeatures"
+    },
+    "esp_a1": {
+      "$ref": "#/$defs/a1Features"
+    },
+    "esp_a2": {
+      "$ref": "#/$defs/a2Features"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nullableNumber": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "nullableRatio": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "nonnegativeNullableNumber": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "timing": {
+      "type": "object",
+      "required": [
+        "interval_count",
+        "mean_interval_ms",
+        "interval_std_ms",
+        "mean_absolute_jitter_ms"
+      ],
+      "properties": {
+        "interval_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mean_interval_ms": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "interval_std_ms": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "mean_absolute_jitter_ms": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        }
+      },
+      "additionalProperties": false
+    },
+    "cameraFeatures": {
+      "type": "object",
+      "required": [
+        "available",
+        "record_count",
+        "frame_count",
+        "available_frame_count",
+        "unavailable_frame_count",
+        "frame_number_gap_count",
+        "track_record_count",
+        "unique_track_count",
+        "pose_available_count",
+        "pose_missing_count",
+        "pose_availability_ratio",
+        "bbox_center_x_mean_px",
+        "bbox_center_y_mean_px",
+        "detection_confidence_mean",
+        "keypoint_confidence_mean",
+        "joint_angle_mean_degrees",
+        "movement_speed_mean_px_per_second",
+        "timing"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "record_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "frame_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "available_frame_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unavailable_frame_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "frame_number_gap_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "track_record_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unique_track_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pose_available_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pose_missing_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pose_availability_ratio": {
+          "$ref": "#/$defs/nullableRatio"
+        },
+        "bbox_center_x_mean_px": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "bbox_center_y_mean_px": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "detection_confidence_mean": {
+          "$ref": "#/$defs/nullableRatio"
+        },
+        "keypoint_confidence_mean": {
+          "$ref": "#/$defs/nullableRatio"
+        },
+        "joint_angle_mean_degrees": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "movement_speed_mean_px_per_second": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "timing": {
+          "$ref": "#/$defs/timing"
+        }
+      },
+      "additionalProperties": false
+    },
+    "a1Features": {
+      "type": "object",
+      "required": [
+        "available",
+        "packet_count",
+        "expected_packet_count",
+        "missing_packet_count",
+        "sequence_gap_count",
+        "pir_motion_ratio",
+        "pir_recent_activity_ratio",
+        "audio_peak_to_peak_mean",
+        "audio_activity_mean",
+        "audio_rms_mean",
+        "audio_rms_min",
+        "audio_rms_max",
+        "wifi_rssi_dbm_mean",
+        "distance_valid_ratio",
+        "distance_cm_mean",
+        "distance_cm_min",
+        "distance_cm_max",
+        "timing"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "packet_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expected_packet_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "missing_packet_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sequence_gap_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pir_motion_ratio": {
+          "$ref": "#/$defs/nullableRatio"
+        },
+        "pir_recent_activity_ratio": {
+          "$ref": "#/$defs/nullableRatio"
+        },
+        "audio_peak_to_peak_mean": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "audio_activity_mean": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "audio_rms_mean": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "audio_rms_min": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "audio_rms_max": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "wifi_rssi_dbm_mean": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "distance_valid_ratio": {
+          "$ref": "#/$defs/nullableRatio"
+        },
+        "distance_cm_mean": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "distance_cm_min": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "distance_cm_max": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "timing": {
+          "$ref": "#/$defs/timing"
+        }
+      },
+      "additionalProperties": false
+    },
+    "a2Features": {
+      "type": "object",
+      "required": [
+        "available",
+        "packet_count",
+        "expected_packet_count",
+        "missing_packet_count",
+        "sequence_gap_count",
+        "pir_motion_ratio",
+        "pir_recent_activity_ratio",
+        "audio_peak_to_peak_mean",
+        "audio_activity_mean",
+        "audio_rms_mean",
+        "audio_rms_min",
+        "audio_rms_max",
+        "wifi_rssi_dbm_mean",
+        "timing"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "packet_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expected_packet_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "missing_packet_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sequence_gap_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pir_motion_ratio": {
+          "$ref": "#/$defs/nullableRatio"
+        },
+        "pir_recent_activity_ratio": {
+          "$ref": "#/$defs/nullableRatio"
+        },
+        "audio_peak_to_peak_mean": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "audio_activity_mean": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "audio_rms_mean": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "audio_rms_min": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "audio_rms_max": {
+          "$ref": "#/$defs/nonnegativeNullableNumber"
+        },
+        "wifi_rssi_dbm_mean": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "timing": {
+          "$ref": "#/$defs/timing"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

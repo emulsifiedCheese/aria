@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/esp_packet.schema.json",
+  "title": "ARIA Zone A ESP Telemetry Packet",
+  "description": "Telemetry packet transmitted by the active ESP-A1 or ESP-A2 Zone A sensor nodes to the ARIA laptop receiver. ESP-B, ESP-T, Zone B and Zone T are retired and are not accepted by this schema.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "firmware_version",
+    "sensor_config",
+    "boot_id",
+    "node_id",
+    "zone",
+    "sequence",
+    "timestamp_ms",
+    "wifi_connected",
+    "wifi_rssi_dbm",
+    "pir_motion",
+    "pir_recent_activity",
+    "audio_peak_to_peak",
+    "audio_activity",
+    "audio_rms"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "firmware_version": {
+      "description": "Semantic version reported by the node firmware. The current ESP-A1 and ESP-A2 firmware version is 1.1.1.",
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "examples": [
+        "1.1.1"
+      ]
+    },
+    "sensor_config": {
+      "description": "Hardware configuration: ESP-A1 uses PIR, ultrasonic and microphone sensors; ESP-A2 uses PIR and microphone sensors only.",
+      "type": "string",
+      "enum": [
+        "A_PIR_US_MIC",
+        "A_PIR_MIC"
+      ]
+    },
+    "boot_id": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "node_id": {
+      "description": "Identity of an active Zone A node. Legacy ESP-A, ESP-B and ESP-T identities are rejected.",
+      "type": "string",
+      "enum": [
+        "ESP-A1",
+        "ESP-A2"
+      ]
+    },
+    "zone": {
+      "description": "Only Zone A remains in the active deployment.",
+      "type": "string",
+      "const": "A"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "timestamp_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "wifi_connected": {
+      "type": "boolean"
+    },
+    "wifi_rssi_dbm": {
+      "type": "integer",
+      "minimum": -120,
+      "maximum": 0
+    },
+    "pir_motion": {
+      "type": "boolean"
+    },
+    "pir_recent_activity": {
+      "type": "boolean"
+    },
+    "distance_cm": {
+      "description": "ESP-A1 ultrasonic distance in centimetres, null when unavailable, or -1 when the firmware reports an invalid echo. This field is forbidden for ESP-A2.",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": -1
+    },
+    "distance_valid": {
+      "description": "Whether ESP-A1's ultrasonic distance reading is valid. This field is forbidden for ESP-A2.",
+      "type": "boolean"
+    },
+    "audio_peak_to_peak": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "audio_activity": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "audio_rms": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "node_id": {
+            "const": "ESP-A1"
+          }
+        },
+        "required": [
+          "node_id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "sensor_config": {
+            "const": "A_PIR_US_MIC"
+          }
+        },
+        "required": [
+          "distance_cm",
+          "distance_valid"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "node_id": {
+            "const": "ESP-A2"
+          }
+        },
+        "required": [
+          "node_id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "sensor_config": {
+            "const": "A_PIR_MIC"
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "distance_cm"
+              ]
+            },
+            {
+              "required": [
+                "distance_valid"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

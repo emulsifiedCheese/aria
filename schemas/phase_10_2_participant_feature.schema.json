@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/phase_10_2_participant_feature.schema.json",
+  "title": "ARIA Phase 10.2 Participant Feature Window",
+  "description": "One approved participant label joined to track-specific Camera A features and shared ESP-A1/A2 context for one two-second Zone A window.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dataset_version",
+    "episode_id",
+    "session_id",
+    "participant_id",
+    "local_track_id",
+    "source_annotation_id",
+    "activity",
+    "provenance",
+    "feature_vector"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "dataset_version": {"type": "string", "const": "zone-a-phase10-features-v1"},
+    "episode_id": {"type": "string", "pattern": "^episode_[a-f0-9]{16}$"},
+    "session_id": {
+      "type": "string",
+      "pattern": "^zone_a_[0-9]{8}T[0-9]{6}SGT_[a-z0-9]{4,16}$"
+    },
+    "participant_id": {"type": "string", "pattern": "^P[0-9]{4}$"},
+    "local_track_id": {"type": "integer", "minimum": 0},
+    "source_annotation_id": {"type": "string", "minLength": 1},
+    "activity": {
+      "type": "string",
+      "enum": ["Serving/Processing", "Idle/Waiting", "Reaching/Handling"]
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "source_manifest_sha256",
+        "source_annotation_schema_version",
+        "annotation_normalisation_sha256",
+        "collection_profile_id",
+        "collection_profile_sha256",
+        "mask_config_version",
+        "camera_track_schema_version",
+        "esp_packet_schema_version",
+        "feature_vector_schema_version"
+      ],
+      "properties": {
+        "source_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "source_annotation_schema_version": {"type": "integer", "enum": [2, 3]},
+        "annotation_normalisation_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "collection_profile_id": {"type": "string", "pattern": "^zone-a-collection-v[0-9]+$"},
+        "collection_profile_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "mask_config_version": {"type": "string", "minLength": 1},
+        "camera_track_schema_version": {"type": "integer", "const": 2},
+        "esp_packet_schema_version": {"type": "integer", "const": 1},
+        "feature_vector_schema_version": {"type": "integer", "const": 2}
+      },
+      "additionalProperties": false
+    },
+    "feature_vector": {
+      "$ref": "https://aria.local/schemas/feature_vector.schema.json"
+    }
+  },
+  "additionalProperties": false
+}

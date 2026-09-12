@@ -1,0 +1,462 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/session_manifest.schema.json",
+  "title": "ARIA Zone A Session Manifest",
+  "description": "Versioned lifecycle record for a controlled Zone A session. It permits pseudonymised Counter Agent identifiers only and does not describe raw audio or video outputs.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "session_id",
+    "zone",
+    "study_scope",
+    "session_kind",
+    "status",
+    "participant_ids",
+    "created_at_sgt",
+    "started_at_sgt",
+    "ended_at_sgt",
+    "configuration",
+    "preflight",
+    "outputs",
+    "incident_ids"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 6
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^zone_a_[0-9]{8}T[0-9]{6}SGT_[a-z0-9]{4,16}$"
+    },
+    "zone": {
+      "type": "string",
+      "const": "A"
+    },
+    "study_scope": {
+      "type": "string",
+      "const": "consenting_counter_agents"
+    },
+    "session_kind": {
+      "type": "string",
+      "enum": [
+        "non_research_dry_run",
+        "pilot",
+        "participant"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "running",
+        "paused",
+        "completed",
+        "aborted"
+      ]
+    },
+    "participant_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^P[0-9]{4}$"
+      },
+      "uniqueItems": true
+    },
+    "created_at_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "started_at_sgt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "ended_at_sgt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "configuration": {
+      "$ref": "#/$defs/configuration"
+    },
+    "preflight": {
+      "$ref": "#/$defs/preflight"
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/output"
+      },
+      "uniqueItems": true
+    },
+    "incident_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^incident_[a-z0-9_-]{4,64}$"
+      },
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "session_kind": {
+            "const": "non_research_dry_run"
+          }
+        },
+        "required": [
+          "session_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "participant_ids": {
+            "maxItems": 0
+          },
+          "configuration": {
+            "properties": {
+              "collection_profile_id": {
+                "type": "null"
+              },
+              "collection_profile_sha256": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "participant_ids": {
+            "minItems": 1
+          },
+          "configuration": {
+            "properties": {
+              "collection_profile_id": {
+                "const": "zone-a-collection-v4"
+              },
+              "collection_profile_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "running",
+              "paused",
+              "completed",
+              "aborted"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "started_at_sgt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "\\+08:00$"
+          },
+          "preflight": {
+            "properties": {
+              "consent_and_acknowledgement_confirmed": {
+                "const": true
+              },
+              "camera_identity_and_mode_confirmed": {
+                "const": true
+              },
+              "privacy_mask_verified": {
+                "const": true
+              },
+              "audio_capture_disabled": {
+                "const": true
+              },
+              "esp_a1_fresh": {
+                "const": true
+              },
+              "esp_a2_fresh": {
+                "const": true
+              },
+              "storage_ready": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "completed",
+              "aborted"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "ended_at_sgt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "\\+08:00$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "completed"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "outputs": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "configuration": {
+      "type": "object",
+      "required": [
+        "camera_id",
+        "capture_width_px",
+        "capture_height_px",
+        "capture_fps",
+        "mask_config_version",
+        "mask_verified",
+        "collection_profile_id",
+        "collection_profile_sha256",
+        "esp_nodes",
+        "schema_versions"
+      ],
+      "properties": {
+        "camera_id": {
+          "type": "string",
+          "const": "camera_a"
+        },
+        "capture_width_px": {
+          "type": "integer",
+          "const": 1920
+        },
+        "capture_height_px": {
+          "type": "integer",
+          "const": 1080
+        },
+        "capture_fps": {
+          "type": "integer",
+          "const": 30
+        },
+        "mask_config_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mask_verified": {
+          "type": "boolean",
+          "const": true
+        },
+        "collection_profile_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "collection_profile_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "esp_nodes": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "ESP-A1"
+            },
+            {
+              "const": "ESP-A2"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "schema_versions": {
+          "type": "object",
+          "required": [
+            "session_manifest",
+            "esp_packet",
+            "camera_track",
+            "feature_vector",
+            "annotation",
+            "prediction",
+            "incident"
+          ],
+          "properties": {
+            "session_manifest": {
+              "type": "integer",
+              "const": 6
+            },
+            "esp_packet": {
+              "type": "integer",
+              "const": 1
+            },
+            "camera_track": {
+              "type": "integer",
+              "const": 2
+            },
+            "feature_vector": {
+              "type": "integer",
+              "const": 2
+            },
+            "annotation": {
+              "type": "integer",
+              "const": 2
+            },
+            "prediction": {
+              "type": "integer",
+              "const": 2
+            },
+            "incident": {
+              "type": "integer",
+              "const": 5
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "preflight": {
+      "type": "object",
+      "required": [
+        "checked_at_sgt",
+        "consent_and_acknowledgement_confirmed",
+        "camera_identity_and_mode_confirmed",
+        "privacy_mask_verified",
+        "audio_capture_disabled",
+        "esp_a1_fresh",
+        "esp_a2_fresh",
+        "storage_ready"
+      ],
+      "properties": {
+        "checked_at_sgt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "pattern": "\\+08:00$"
+        },
+        "consent_and_acknowledgement_confirmed": {
+          "type": "boolean"
+        },
+        "camera_identity_and_mode_confirmed": {
+          "type": "boolean"
+        },
+        "privacy_mask_verified": {
+          "type": "boolean"
+        },
+        "audio_capture_disabled": {
+          "type": "boolean"
+        },
+        "esp_a1_fresh": {
+          "type": "boolean"
+        },
+        "esp_a2_fresh": {
+          "type": "boolean"
+        },
+        "storage_ready": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "output": {
+      "type": "object",
+      "required": [
+        "kind",
+        "relative_path",
+        "observed_record_count",
+        "written_record_count",
+        "excluded_record_count",
+        "gap_count",
+        "longest_gap_seconds"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "telemetry_features",
+            "camera_features",
+            "multimodal_windows",
+            "annotations",
+            "predictions",
+            "incident_log"
+          ]
+        },
+        "relative_path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*\\.\\.)[A-Za-z0-9_./-]+$"
+        },
+        "observed_record_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "written_record_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "excluded_record_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "gap_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "longest_gap_seconds": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
+

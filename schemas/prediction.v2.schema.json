@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aria.local/schemas/prediction.schema.json",
+  "title": "ARIA Zone A Activity Prediction",
+  "description": "Privacy-preserving activity prediction for a Zone A multimodal feature window with explicit modality availability and uncertainty.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "prediction_id",
+    "session_id",
+    "window_id",
+    "zone",
+    "local_track_id",
+    "emitted_at_sgt",
+    "model_version",
+    "preprocessing_version",
+    "feature_schema_version",
+    "prediction_available",
+    "predicted_activity",
+    "confidence",
+    "unavailable_reason",
+    "availability"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 2
+    },
+    "prediction_id": {
+      "type": "string",
+      "pattern": "^prediction_[a-z0-9_-]{4,64}$"
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^zone_a_[0-9]{8}T[0-9]{6}SGT_[a-z0-9]{4,16}$"
+    },
+    "window_id": {
+      "type": "string",
+      "pattern": "^zone_a_[0-9]+_[0-9]+$"
+    },
+    "zone": {
+      "type": "string",
+      "const": "A"
+    },
+    "local_track_id": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "emitted_at_sgt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "\\+08:00$"
+    },
+    "model_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    },
+    "preprocessing_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    },
+    "feature_schema_version": {
+      "type": "integer",
+      "const": 2
+    },
+    "prediction_available": {
+      "type": "boolean"
+    },
+    "predicted_activity": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/activity"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "confidence": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "unavailable_reason": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "excluded_interval",
+            "insufficient_modalities",
+            "missing_camera_track",
+            "low_confidence",
+            "model_error"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "availability": {
+      "type": "object",
+      "required": [
+        "camera_available",
+        "pose_available",
+        "esp_a1_available",
+        "esp_a2_available"
+      ],
+      "properties": {
+        "camera_available": {
+          "type": "boolean"
+        },
+        "pose_available": {
+          "type": "boolean"
+        },
+        "esp_a1_available": {
+          "type": "boolean"
+        },
+        "esp_a2_available": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "prediction_available": {
+            "const": true
+          }
+        },
+        "required": [
+          "prediction_available"
+        ]
+      },
+      "then": {
+        "properties": {
+          "local_track_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "predicted_activity": {
+            "$ref": "#/$defs/activity"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "unavailable_reason": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "predicted_activity": {
+            "type": "null"
+          },
+          "confidence": {
+            "type": "null"
+          },
+          "unavailable_reason": {
+            "type": "string",
+            "enum": [
+              "excluded_interval",
+              "insufficient_modalities",
+              "missing_camera_track",
+              "low_confidence",
+              "model_error"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "activity": {
+      "type": "string",
+      "enum": [
+        "Serving",
+        "Typing/Processing",
+        "Idle/Waiting",
+        "Reaching/Handling"
+      ]
+    }
+  }
+}
+
