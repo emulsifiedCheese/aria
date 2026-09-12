@@ -1,0 +1,584 @@
+{
+  "verified_date": "2026-09-12",
+  "scope": "Original runtime restoration in Documents/aria-gh",
+  "selected_original_runtime_tests": {
+    "passed": 141,
+    "failed": 0
+  },
+  "asset_checks": 7,
+  "original_end_to_end_checks": {
+    "real_model_multiple_tracks": true,
+    "projector_outbox_simulated_delivery": true,
+    "offline_local_continuity": true,
+    "a1_loss_camera_inference": true,
+    "a2_loss_camera_inference": true,
+    "queued_delivery_after_recovery": true,
+    "camera_loss_clears_activity": true,
+    "privacy_pause_no_inference_or_stale_activity": true,
+    "fresh_resume": true,
+    "clean_stop_counts": true,
+    "no_feature_or_prediction_files": true,
+    "temporary_outbox_removed": true
+  },
+  "hardware_tested": false,
+  "fresh_full_install_tested": false,
+  "source_code_exact_copy": true,
+  "removed_toy_demo": true,
+  "added_original_assets": [
+    "models/phase_11_1/camera_only.joblib",
+    "yolov8n.pt",
+    "yolov8n-pose.pt"
+  ],
+  "excluded": "Credentials, participant records, media, unused research models and historical generated evidence",
+  "historical_results_note": "Results below describe earlier versions of the export and superseded toy demo, not the current runtime package.",
+  "historical_results": {
+    "python_version": "3.12",
+    "syntax_files_passed": 143,
+    "unit_tests": {
+      "passed": 466,
+      "failed": 52,
+      "setup_errors": 52
+    },
+    "affected_tests": [
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_live_session.py::test_pilot_requires_masked_track_preview_before_preflight"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_live_session.py::test_pose_model_must_exist_before_preflight"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_live_session.py::test_experimental_track_stitching_is_rejected_for_pilot"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_11_3_evaluation_contract.py::test_phase_11_3_contract_pins_current_sources_and_model"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_11_3_evaluation_contract.py::test_external_test_was_evaluated_once_without_changing_earlier_reports"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_12_1_inference_contract.py::test_contract_pins_the_frozen_camera_only_artifact_and_classes"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_12_1_inference_orchestrator.py::test_cli_processes_only_declared_non_research_records"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_12_1_inference_service.py::test_startup_rejects_model_artifact_hash_drift"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_12_2_dashboard_app.py::test_runner_requires_safe_demo_scope_and_seeds_only_in_memory"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_complete_traceable_evidence_passes"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_explicit_network_limitation_can_satisfy_only_degradation_requirement"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_network_limitation_fails_closed_without_each_required_attestation[change0]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_network_limitation_fails_closed_without_each_required_attestation[change1]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_network_limitation_fails_closed_without_each_required_attestation[change2]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_network_limitation_fails_closed_without_each_required_attestation[change3]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_network_limitation_fails_closed_without_each_required_attestation[change4]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_network_limitation_does_not_waive_other_stability_requirements[duration]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_network_limitation_does_not_waive_other_stability_requirements[gap]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_network_limitation_does_not_waive_other_stability_requirements[stale]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_network_limitation_does_not_waive_other_stability_requirements[metrics]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_network_limitation_does_not_waive_other_stability_requirements[main_trace]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_missing_trace_short_run_and_changed_hash_cannot_pass"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_forbidden_evidence_keys_are_rejected[participant_id]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_forbidden_evidence_keys_are_rejected[raw_video]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_acceptance.py::test_forbidden_evidence_keys_are_rejected[feature_vector]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_aggregate_report.py::test_report_is_opt_in_atomic_fixed_fields_and_operator_attestation"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_aggregate_report.py::test_report_does_not_infer_clean_boot_or_copy_private_runtime_fields"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_aggregate_report.py::test_opted_in_display_report_does_not_enable_cloud_or_recording"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_asset_guard.py::test_reviewed_deployment_assets_match_all_pins"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_equipment.py::test_equipment_health_only_no_model_cloud_or_output_files"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_equipment.py::test_equipment_failed_preflight_opens_no_producers"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_equipment.py::test_equipment_rejects_track_records"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_live_display.py::test_live_display_two_tracks_without_cloud_or_files_then_pause"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_live_display.py::test_display_boundary_rejects_recording_and_cloud[cloud]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_live_display.py::test_display_boundary_rejects_recording_and_cloud[evidence]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_live_display.py::test_display_boundary_rejects_recording_and_cloud[callback]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_live_display.py::test_display_boundary_rejects_recording_and_cloud[writer]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_live_display.py::test_display_dashboard_responses_disable_caching"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_live_display.py::test_display_start_stop_never_constructs_evidence_or_outbox"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_release.py::test_release_allowlist_excludes_data_outputs_retired_firmware_and_media"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_runtime.py::test_synthetic_end_to_end_never_opens_camera_or_network"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_runtime.py::test_aggregate_manifest_never_claims_phase_completion"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_runtime.py::test_artifact_drift_aborts_diagnostic_manifest"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_runtime.py::test_synthetic_cli_failure_leaves_aborted_evidence"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_runtime.py::test_spawned_camera_adapter_and_clean_teardown_without_hardware"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_runtime.py::test_failed_initial_preflight_starts_no_outputs_or_producers"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_stability_report.py::test_shutdown_time_cannot_complete_short_run"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_stability_report.py::test_real_window_runtime_reports_only_numerical_latency"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_stability_report.py::test_whole_stability_loop_never_opens_recording_or_cloud[automatic]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_stability_report.py::test_whole_stability_loop_never_opens_recording_or_cloud[stop]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_stability_report.py::test_whole_stability_loop_never_opens_recording_or_cloud[abort]"
+      },
+      {
+        "outcome": "FAILED",
+        "test": "tests/unit/test_phase_13_stability_report.py::test_whole_stability_loop_never_opens_recording_or_cloud[finalize_error]"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_acceptance.py::test_synthetic_acceptance_passes_without_participant_or_external_data"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_acceptance.py::test_acceptance_proves_offline_live_matrix_parity"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_acceptance.py::test_acceptance_persists_only_schema_valid_abstract_predictions"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_acceptance.py::test_acceptance_records_finite_integration_latency"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_acceptance.py::test_acceptance_writer_is_atomic_and_refuses_failed_report"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_orchestrator.py::test_completed_window_isolates_tracks_and_writes_once"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_orchestrator.py::test_no_camera_track_emits_one_explicit_null_track_record"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_orchestrator.py::test_writer_rejects_conflicting_retry"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_orchestrator.py::test_writer_rejects_invalid_existing_log"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_orchestrator.py::test_writer_restart_preserves_idempotency"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_service.py::test_startup_loads_only_the_frozen_model_and_contract"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_service.py::test_matrix_uses_the_exact_frozen_feature_order"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_service.py::test_matrix_rejects_frozen_feature_drift"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_service.py::test_camera_prediction_is_schema_valid_and_uses_max_probability"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_service.py::test_pose_loss_continues_with_explicit_availability"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_service.py::test_camera_loss_clears_current_output_without_invoking_model"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_service.py::test_model_failure_emits_model_error_without_stale_values"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_service.py::test_prediction_id_is_stable_for_the_same_window_and_track"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_service.py::test_prediction_id_and_output_are_independent_between_tracks"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_1_inference_service.py::test_invalid_session_cannot_emit_a_prediction"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_2_dashboard_integration.py::test_real_model_prediction_and_health_reach_one_ready_snapshot"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_2_dashboard_integration.py::test_integration_does_not_retain_raw_features_media_or_identifiers"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_2_dashboard_integration.py::test_new_camera_unavailable_window_replaces_current_activity"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_2_dashboard_integration.py::test_unverified_mask_blocks_integrated_ready_state"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_2_dashboard_integration.py::test_integration_rejects_retired_or_invalid_producers"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_2_dashboard_integration.py::test_identical_completed_window_retry_is_safe_for_dashboard_state"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_3_firebase_sync.py::test_projection_removes_every_local_identifier_and_feature"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_3_firebase_sync.py::test_unavailable_projection_omits_null_fields"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_3_firebase_sync.py::test_invalid_or_extra_source_field_is_rejected_before_outbox"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_3_firebase_sync.py::test_enqueue_is_durable_private_and_idempotent"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_3_firebase_sync.py::test_successful_delivery_removes_verified_outbox_record"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_3_firebase_sync.py::test_remote_identical_retry_is_success_without_mutating_original"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_3_firebase_sync.py::test_conflicting_remote_retry_stays_queued"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_3_firebase_sync.py::test_offline_delivery_backs_off_then_recovers"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_3_firebase_sync.py::test_firebase_failure_never_blocks_inference_or_dashboard"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_3_firebase_sync.py::test_nonthrowing_callback_contains_local_queue_failure"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_12_3_firebase_sync.py::test_cli_queue_only_requires_safe_scope_and_never_contacts_cloud"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_only_completed_windows_emit_and_tracks_remain_separate"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_late_frame_cannot_reopen_completed_window"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_partial_start_window_is_discarded"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_privacy_pause_clears_inputs_display_and_blocks_inference"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_resume_requires_verification_and_discards_old_records"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_clock_jump_pauses_instead_of_replaying_stale_windows[-1]"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_clock_jump_pauses_instead_of_replaying_stale_windows[30]"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_camera_absence_replaces_previous_activity"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_sensor_loss_does_not_stop_camera_only_model"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_buffer_is_bounded_and_accounted"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_mixed_frame_batch_and_wrong_mask_are_rejected"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_real_outbox_offline_recovery_privacy_purge_and_cleanup"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_dashboard_route_uses_runtime_aggregator_and_clears_on_pause"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_live_person_detection_pauses_before_inference"
+      },
+      {
+        "outcome": "ERROR",
+        "test": "tests/unit/test_phase_13_runtime.py::test_resume_runs_fresh_preflight_before_camera_restart"
+      }
+    ],
+    "limitation": "Source-only export excludes trained/downloaded models, research data, and generated evaluation evidence.",
+    "scope": "Initial source-only export full-suite snapshot; not rerun after synthetic preparation additions.",
+    "synthetic_preparation": {
+      "steps_completed": [
+        1,
+        2
+      ],
+      "tests_passed": 26,
+      "tests_failed": 0,
+      "test_paths": [
+        "tests/unit/test_synthetic_demo.py",
+        "tests/unit/test_multimodal_window_builder.py"
+      ],
+      "dashboard_integrated": true,
+      "clean_install_verified": false
+    },
+    "synthetic_dashboard": {
+      "steps_completed": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "focused_tests_passed": 44,
+      "focused_tests_failed": 0,
+      "test_paths": [
+        "tests/unit/test_synthetic_demo.py",
+        "tests/unit/test_synthetic_dashboard.py",
+        "tests/unit/test_multimodal_window_builder.py"
+      ],
+      "browser_checks": [
+        "initial_render",
+        "automatic_playback",
+        "pause",
+        "next_window",
+        "restart",
+        "camera_dropout_clears_prediction",
+        "input_recovery"
+      ],
+      "local_server_shutdown_verified": true,
+      "clean_zip_install_verified": true
+    },
+    "clean_install_verification": {
+      "date": "2026-09-12",
+      "platform": "macOS Apple Silicon",
+      "macos_version": "26.6.2",
+      "python": "3.12.14",
+      "system_site_packages": false,
+      "requirements": "requirements-demo.txt",
+      "pip_check": "passed",
+      "focused_tests": {
+        "passed": 44,
+        "failed": 0
+      },
+      "launcher_check": "passed",
+      "browser_checks": [
+        "initial_render",
+        "automatic_playback",
+        "pause",
+        "next_window",
+        "restart",
+        "esp_a1_dropout",
+        "recovery"
+      ],
+      "shutdown": "passed",
+      "optional_research_dependencies_installed": false,
+      "limitations": [
+        "Windows and Linux not tested",
+        "No hardware or live cloud tests",
+        "Historical full suite requires omitted research assets"
+      ],
+      "installed_packages": [
+        "attrs==26.1.0",
+        "blinker==1.9.0",
+        "certifi==2026.7.22",
+        "charset-normalizer==3.5.1",
+        "click==8.5.0",
+        "dash==2.18.2",
+        "dash-core-components==2.0.0",
+        "dash-html-components==2.0.0",
+        "dash-table==5.0.0",
+        "Flask==3.0.3",
+        "idna==3.19",
+        "importlib_metadata==9.0.1",
+        "iniconfig==2.3.0",
+        "itsdangerous==2.2.0",
+        "Jinja2==3.1.6",
+        "jsonschema==4.23.0",
+        "jsonschema-specifications==2025.9.1",
+        "MarkupSafe==3.0.3",
+        "narwhals==2.26.0",
+        "nest-asyncio==1.6.0",
+        "numpy==1.26.4",
+        "packaging==26.3",
+        "plotly==7.0.0",
+        "pluggy==1.6.0",
+        "pytest==8.3.4",
+        "referencing==0.37.0",
+        "requests==2.34.2",
+        "retrying==1.4.2",
+        "rpds-py==2026.6.3",
+        "setuptools==84.0.0",
+        "typing_extensions==4.16.0",
+        "urllib3==2.7.0",
+        "Werkzeug==3.0.6",
+        "zipp==4.1.0"
+      ]
+    },
+    "original_layout_alignment": {
+      "date": "2026-09-12",
+      "synthetic_tests_passed": 45,
+      "original_dashboard_ui_tests_passed": 6,
+      "research_launcher_test_failure": "Intentionally excluded models/phase_11_1/camera_only.joblib",
+      "original_css_unchanged": true,
+      "browser_verified": [
+        "original styling",
+        "automatic playback",
+        "pause",
+        "camera dropout and degraded warnings"
+      ],
+      "archives_updated": false
+    }
+  }
+}
