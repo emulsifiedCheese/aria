@@ -1,0 +1,6 @@
+scenario_id,scenario_type,subject_label,observed_track_ids,notes
+S1,continuous,subject_1,,record displayed S IDs only; any S? is a failure
+S2,short_occlusion,subject_1,,record displayed S IDs only; any S? is a failure
+S3,full_exit_reentry,subject_1,,record displayed S IDs only; a new S ID is expected after more than one second absent
+S4,multiple_person,subject_1,,record displayed S IDs only; any shared S ID or S? is a failure
+S4,multiple_person,subject_2,,record displayed S IDs only; any shared S ID or S? is a failure

@@ -1,0 +1,15 @@
+# Post-Session Checklist
+- [ ] Session end time recorded
+- [ ] All session writers closed through Phase 7.3 lifecycle controller
+- [ ] Expected telemetry files created
+- [ ] Temporary video kept local
+- [ ] No raw audio file created
+- [ ] Privacy incidents reviewed
+- [ ] Excluded window IDs linked to schema-valid incident records
+- [ ] Required deletions completed
+- [ ] Relative file path, observed, written and excluded counts, gap count and longest gap recorded for every output
+- [ ] `observed = written + excluded` verified for every output
+- [ ] Final session manifest validated and marked `completed` (otherwise quarantined and reviewed)
+- [ ] `zone-a-collection-v7` and expected profile SHA-256 recorded in the final manifest
+- [ ] Consent-confirmed timestamped manifest audit entry recorded for every participant added during the run
+- [ ] Temporary files stored in approved location
