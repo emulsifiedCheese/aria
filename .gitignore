@@ -1,0 +1,98 @@
+# Local secrets and credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+firebase*.json
+service-account*.json
+service_account*.json
+
+# Participant and consent records must remain outside the repository
+docs/ethics/consented/
+
+# Generated research and diagnostic data
+data/raw/*
+data/interim/*
+data/excluded/*
+data/annotations/*
+data/processed/*
+data/quarantine/**
+data/historical/**
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/excluded/.gitkeep
+!data/excluded/README.md
+!data/annotations/README.md
+!data/quarantine/**/
+!data/quarantine/**/README.md
+!data/historical/**/
+!data/historical/**/README.md
+
+# Runtime and evaluation outputs
+outputs/logs/*
+outputs/evaluation/*
+outputs/firebase_outbox/**
+!outputs/logs/.gitkeep
+!outputs/evaluation/.gitkeep
+
+# Raw or temporary media
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.wav
+*.m4a
+*.mp3
+*.aac
+
+# Generated model artefacts
+/*.pt
+models/**/*.pkl
+models/**/*.joblib
+models/**/*.pt
+models/**/*.pth
+models/**/*.onnx
+
+# Python and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+node_modules/
+*-debug.log
+
+# Operating-system and editor files
+.DS_Store
+._*
+*.swp
+*.swo
+*~
+
+# GitHub source export: private and generated material remains local
+/tmp/
+/aria-gh/
+/outputs/
+/docs/ethics/
+/docs/testing/results/
+/docs/calibration/results/
+/config/phase_10_1_source_approvals.json
+/config/phase_10_3_split_policy.json
+/data/**
+!/data/README.md
+!/data/annotations/
+!/data/annotations/README.md
+!/data/excluded/
+!/data/excluded/README.md
+# Public Firebase emulator configuration and database rules are not credentials
+!/firebase.json
+!/config/firebase_realtime_database.rules.json
+
+# Required original runtime assets; other generated models remain ignored
+!/models/phase_11_1/camera_only.joblib
+!/yolov8n.pt
+!/yolov8n-pose.pt
